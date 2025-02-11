@@ -18,13 +18,13 @@ function setup(){
         data:cleanedData,
         xValue:"Age_Group", 
         yValue:"Female", 
-        chartHeight:300, 
-        chartWidth:400, 
+        chartHeight:600, 
+        chartWidth:600, 
         barWidth:20, 
-        margin:10, 
-        axisThickness:1, 
+        margin:15, 
+        axisThickness:3, 
         xPos:50, 
-        yPos:350}));
+        yPos:650}));
     
     //charts.push(new BarChart(cleanedData,"Age_Group", "Male", 150, 300, 1, 5, 1, 100, 740));
     //charts.push(new BarChart(cleanedData,"Age_Group", "Total", 200, 400, 20, 20, 3, 380, 250));

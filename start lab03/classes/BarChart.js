@@ -8,7 +8,7 @@ class BarChart {
         this.barWidth=obj.barWidth || 10 ;
         this.margin=obj.margin || 10;
         this.axisThickness =obj.axisThickness || 1;
-        this.axisTickThickness = 1;
+        this.axisTickThickness =obj.axisThickness || 1 ;
 
         this.chartPosX = obj.xPos|| 50;
         this.chartPosY = obj.yPos || 350;
@@ -22,7 +22,7 @@ this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
 
         this.axisTextColour = color( 0,0,0);   
         this.numTicks = 10;
-        this.tickLength = 3;
+        this.tickLength = 10;
     }
 
 
