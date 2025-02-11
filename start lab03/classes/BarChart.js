@@ -66,21 +66,36 @@ this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
 
     renderTicks() {
         push();
-    translate(this.chartPosX,this.chartPosY)
-    noFill()
-    stroke(this.axisTickColour)
-    strokeWeight(this.axisTickThickness)
-    let tickIncrement = this.chartHeight/this.numTicks
-    for (let i = 0; i <= this.numTicks; i++) {
+        translate(this.chartPosX, this.chartPosY);
+        noFill();
         
-        
+        // Set stroke for tick marks
+        stroke(this.axisTickColour);
+        strokeWeight(this.axisTickThickness);
     
-    line(0, -tickIncrement*i, -this.tickLength,-tickIncrement*i)
-}
-   
-
-    pop()
+        let tickIncrement = this.chartHeight / this.numTicks;
+        let maxValue = this.maxValue ?? 100; // Ensure maxValue is valid
+        let valueIncrement = maxValue / this.numTicks;
+    
+        for (let i = 0; i <= this.numTicks; i++) {
+            let y = -tickIncrement * i;
+            let value = (i * valueIncrement).toFixed(0); // Round values
+    
+            // Draw tick mark
+            stroke(this.axisTickColour); // Ensure stroke is enabled
+            line(0, y, -this.tickLength, y);
+    
+            // Draw numerical indicator
+            noFill();
+            strokeWeight(1); // Reset stroke weight for text
+            fill(0); // Set text color
+            textAlign(RIGHT, CENTER);
+            text(value, -this.tickLength - 5, y); // Position text
+        }
+    
+        pop();
     }
+    
     
     renderLabels() {
         push();
