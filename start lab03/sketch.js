@@ -125,13 +125,14 @@ friends.push(new Friend("Dave", 289));
 friends.push(new Friend("Roger", 119));
 console.log(friends)
  
-function cleanData(){
-    for(let i=0; i < data.rows.length; i++){
-        cleanedData.push(data.rows[i].obj)
+function cleanData() {
+    for (let i = 0; i < data.rows.length; i++) {
+        cleanedData.push(data.rows[i].obj);
     }
-    for(let i=0; i < cleanedData.length; i++ ){
-        cleanedData[i].Female = parseInt(cleanedData[i].Female)
-        cleanedData[i].Male = parseInt(cleanedData[i].Male)
-        cleanedData[i].Total = parseInt(cleanedData[i].Total)
+    console.log(cleanedData); // Check if the data is cleaned properly
+    for (let i = 0; i < cleanedData.length; i++) {
+        cleanedData[i].Female = parseInt(cleanedData[i].Female) || 0;
+        cleanedData[i].Male = parseInt(cleanedData[i].Male) || 0;
+        cleanedData[i].Total = parseInt(cleanedData[i].Total) || 0;
     }
 }
