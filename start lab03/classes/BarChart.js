@@ -103,7 +103,15 @@ this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
     pop()
     pop()
     }
+
+
+renderTitle() {
+    push();
+    translate(this.chartPosX + this.chartWidth / 2, this.chartPosY - this.chartHeight - 20); // Position the title above the chart
+    fill(this.axisTextColour);
+    textAlign(CENTER, CENTER);
+    textSize(18);
+    text("Chart Title: Age Distribution by Gender", 0, 0); // Change to the title you'd like
+    pop();
 }
-
-
-
+}

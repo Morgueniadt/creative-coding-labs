@@ -10,7 +10,7 @@ function preload(){
 }
  
 function setup(){
-    createCanvas(800,800);
+    createCanvas(1000,1000);
     angleMode(DEGREES);
     noLoop();
     cleanData();
@@ -48,6 +48,7 @@ function draw() {
         chart.renderAxis()
         chart.renderLabels()
         chart.renderTicks()
+        chart.renderTitle()
     })
     
     // push();
