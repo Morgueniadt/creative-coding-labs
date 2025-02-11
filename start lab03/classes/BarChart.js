@@ -1,24 +1,25 @@
 class BarChart {
-    constructor(_data, _xValue, _yValue, _chartHeight, _chartWidth, _barWidth, _margin, _axisThickness, _chartPosX, _chartPosY) {
-        this.data = _data;
-        this.xValue = _xValue
-        this.yValue = _yValue;
-        this.chartHeight=_chartHeight;
-        this.chartWidth=_chartWidth;
-        this.barWidth=_barWidth;
-        this.margin=_margin;
-        this.axisThickness =_axisThickness;
+    constructor(obj) {
+        this.data = obj.data;
+        this.xValue = obj.xValue
+        this.yValue = obj.yValue;
+        this.chartHeight=obj.chartHeight || 300;
+        this.chartWidth=obj.chartWidth|| 300;
+        this.barWidth=obj.barWidth || 10 ;
+        this.margin=obj.margin || 10;
+        this.axisThickness =obj.axisThickness || 1;
         this.axisTickThickness = 1;
 
-        this.chartPosX = _chartPosX;
-        this.chartPosY = _chartPosY;
+        this.chartPosX = obj.xPos|| 50;
+        this.chartPosY = obj.yPos || 350;
 
         this.gap = (this.chartWidth - (this.data.length * this.barWidth) - (this.margin * 2))/(this.data.length-1);
         this.scaler= this.chartHeight / (max(cleanedData.map(row => row[this.yValue])));
 
-        this.axisColour= color(255,204,0);
-        this.axisTickColour= color(255,2,0);
-        this.barColour = color (100,221,100);
+this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
+this.axisTickColour = color(176, 224, 230);  // Light Blue (Ticks)
+this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
+
         this.axisTextColour = color( 0,0,0);   
         this.numTicks = 10;
         this.tickLength = 3;
@@ -41,9 +42,6 @@ class BarChart {
         fill(this.axisTextColour);
         textAlign(LEFT, CENTER)
         translate(xPos + (this.barWidth/2), 15)
-        textSize(10)
-        rotate(60)
-        text (this.data[i][this.xValue], 0 , 0);
         pop()
     }
     pop()
@@ -86,7 +84,8 @@ class BarChart {
     
     renderLabels() {
         push();
- 
+            translate(this.chartPosX,this.chartPosY);
+            
     push()
     translate(this.margin,0)
     for (let i = 0; i < this.data.length; i++) {
@@ -96,7 +95,7 @@ class BarChart {
         fill(this.axisTextColour);
         textAlign(LEFT, CENTER)
         translate(xPos + (this.barWidth/2), 15)
-        textSize(10)
+        textSize(15)
         rotate(60)
         text (this.data[i][this.xValue], 0 , 0);
         pop()

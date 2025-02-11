@@ -14,7 +14,18 @@ function setup(){
     angleMode(DEGREES);
     noLoop();
     cleanData();
-    charts.push(new BarChart(cleanedData,"Age_Group", "Female", 300, 400, 20, 10, 1, 50, 700));
+    charts.push(new BarChart({
+        data:cleanedData,
+        xValue:"Age_Group", 
+        yValue:"Female", 
+        chartHeight:300, 
+        chartWidth:400, 
+        barWidth:20, 
+        margin:10, 
+        axisThickness:1, 
+        xPos:50, 
+        yPos:350}));
+    
     //charts.push(new BarChart(cleanedData,"Age_Group", "Male", 150, 300, 1, 5, 1, 100, 740));
     //charts.push(new BarChart(cleanedData,"Age_Group", "Total", 200, 400, 20, 20, 3, 380, 250));
     // femaleScores = cleanedData.map(row =>row.Female);
@@ -31,11 +42,11 @@ function setup(){
 }
  
 function draw() {
-    background(100,150,255)
+    background(100)
     charts.forEach(chart => {
         chart.renderBars()
         chart.renderAxis()
-        //chart.renderLabels()
+        chart.renderLabels()
         chart.renderTicks()
     })
     
