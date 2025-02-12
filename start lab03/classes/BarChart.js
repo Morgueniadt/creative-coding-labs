@@ -127,4 +127,8 @@ class BarChart {
         text("Chart Title: Age Distribution by Gender", 0, 0);
         pop();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d408fdc0c208747cc10b7df57941eb40c0240323
