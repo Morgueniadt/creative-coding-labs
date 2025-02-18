@@ -33,7 +33,7 @@ function setup() {
     barColours.push(color(12, 43, 23))
 
     myNewArray = cleanedData.map(row => row.Female)
-    total = -0
+    total = 0
 
     myNewArray.forEach(item => total = total + item)
 
@@ -50,20 +50,19 @@ function draw() {
 
     for (let i = 0; i < myNewArray.length; i++) {
         
-        fill(random(255))
+        fill(random(255),0,0)
         stroke(255)
         let start = 0;
         let end = ((myNewArray[i] / total) * 360);
 
-        arc(0, 0, 200, 200, start, end, PIE)
-        rotate(90)
+        arc(0, 0, 400, 400, start, end, PIE)
+        rotate(end)
     }
 
     textSize(30)
     fill(255)
-    rotate(90)
     noStroke()
-    text("john",25,0)
+    text("john",25,220)
     pop();
 
 }
