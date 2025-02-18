@@ -61,8 +61,9 @@ function draw() {
 
     textSize(30)
     fill(255)
+    rotate(90)
     noStroke()
-    text("john",0,0)
+    text("john",25,0)
     pop();
 
 }
