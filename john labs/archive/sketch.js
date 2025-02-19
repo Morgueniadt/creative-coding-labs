@@ -3,7 +3,7 @@ let cleanedData = [];
 let chart;
 
 function preload() {
-    table = loadTable("Most Streamed Spotify Songs 2024.csv", "csv", "header");
+    table = loadTable("Most_Streamed_Spotify_Songs_2024.csv", "csv", "header");
 }
 
 function setup() {
