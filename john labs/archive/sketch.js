@@ -1,9 +1,24 @@
 let table;
 let cleanedData = [];
 let chart;
+let data;
+let chartHeight = 300;
+let chartWidth = 800;
+let barWidth = 40;
+let margin = 15;
+let gap;
+let scaler;
+let axisThickness = 5;
+let chartPosX = 50;
+let chartPosY = 600;
+let axisColour;
+let barColour;
+let axisTextColour;
+let yValue = "streams";
+let xValue = "track";
 
 function preload() {
-    table = loadTable("Most_Streamed_Spotify_Songs_2024.csv", "csv", "header");
+    table = loadTable("data/Most_Streamed_Spotify_Songs_2024.csv", "csv", "header");
 }
 
 function setup() {
@@ -14,7 +29,7 @@ function setup() {
     chart = new BarChart(
         cleanedData, 
         "track", "streams", 
-        400, 800, 40, 50, 2, 100, 600
+        chartWidth, chartHeight, barWidth, margin, axisThickness, chartPosX, chartPosY
     );
 }
 
@@ -28,7 +43,7 @@ function draw() {
 function cleanData() {
     for (let i = 0; i < table.getRowCount(); i++) {
         let track = table.getString(i, "Track");
-        let streams = table.getString(i, "Spotify Streams").replace(/,/g, ""); // Remove commas
+        let streams = table.getString(i, "Spotify_Streams").replace(/,/g, ""); // Remove commas
 
         streams = int(streams) || 0; // Convert to number
 
