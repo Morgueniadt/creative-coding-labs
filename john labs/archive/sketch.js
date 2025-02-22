@@ -1,7 +1,6 @@
 let data;
 let cleanedData = [];
 let chart = [];
-let trackNames;
 
 function preload() {
     // Load the CSV data for the most streamed Spotify tracks
@@ -47,17 +46,22 @@ function draw() {
 }
 
 function cleanData() {
-    // Clean the data and format it for the chart
+    let trackSet = new Set(); // Use a Set to store unique track names
+
     for (let i = 0; i < data.getRowCount(); i++) {
-        let track = data.getString(i, "Track");
+        let track = data.getString(i, "Track").trim(); // Ensure consistent formatting
         let streams = data.getString(i, "Spotify_Streams").replace(/,/g, ""); // Remove commas
 
         streams = int(streams) || 0; // Convert to number
 
-        cleanedData.push({ track, streams });
+        // Check if track is already in the Set before adding
+        if (!trackSet.has(track)) {
+            cleanedData.push({ track, streams });
+            trackSet.add(track); // Mark track as added
+        }
     }
 
     // Sort by streams (descending) and keep the top 10 tracks
     cleanedData.sort((a, b) => b.streams - a.streams);
-    cleanedData = cleanedData.slice(0, 10);  // Only keep the top 10
+    cleanedData = cleanedData.slice(0, 10); // Keep only the top 10
 }
