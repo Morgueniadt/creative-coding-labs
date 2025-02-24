@@ -99,7 +99,12 @@ class BarChart {
             textAlign(RIGHT, CENTER);
             translate(-5, -(this.margin+yPos) + (this.barHeight / 2));
             textSize(15);
+            if (i==0 || this.data[i][this.xValue]!==this.data[i-1][this.xValue]) {
             text(this.data[i][this.xValue], 0, 0);
+            }
+            else {
+                text(this.data[i-1][this.xValue], 0, 0);
+            }
             pop();
         }
         pop();

@@ -79,7 +79,7 @@ class BarChart {
 
         for (let i = 0; i <= this.numTicks; i++) {
             let y = -tickIncrement * i;
-            let value = (i * valueIncrement).toFixed(0); // Round values
+            let value = Math.floor(i * valueIncrement).toFixed(0); // Round values
 
             // Draw tick mark
             stroke(this.axisTickColour);
