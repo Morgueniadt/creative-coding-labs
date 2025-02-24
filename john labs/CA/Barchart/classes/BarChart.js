@@ -24,7 +24,7 @@ class BarChart {
 
         // Colors
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
-        this.axisTickColour = color(176, 224, 230);  // Light Blue (Ticks)
+        this.axisTickColour = color(0);  // Light Blue (Ticks)
         this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
         this.axisTextColour = color(0, 0, 0);
 
