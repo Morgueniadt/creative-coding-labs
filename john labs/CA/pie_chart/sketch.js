@@ -21,7 +21,7 @@ function setup() {
         data: cleanedData,
         xValue: "track",  // Use track names for segments
         yValue: "streams",  // Use streams for segment size
-        chartRadius: 360, 
+        chartRadius: 300, 
         chartPosX: width / 2, 
         chartPosY: height / 2,
     }));
@@ -90,7 +90,7 @@ class PieChart {
         pop();
     }
 
-    // Render the labels for the pie chart
+    // Render the labels and percentages for the pie chart
     renderLabels() {
         push();
         translate(this.chartPosX, this.chartPosY);
@@ -98,7 +98,7 @@ class PieChart {
         let total = this.data.reduce((sum, row) => sum + row[this.yValue], 0);
         let startAngle = 0;
 
-        // Render labels on the pie chart slices
+        // Render labels and percentages on the pie chart slices
         for (let i = 0; i < this.data.length; i++) {
             let sliceAngle = (this.data[i][this.yValue] / total) * 360;
             let labelAngle = startAngle + sliceAngle / 2; // Middle of the slice
@@ -109,7 +109,12 @@ class PieChart {
             fill(0);
             textSize(12);
             textAlign(CENTER, CENTER);
-            text(this.data[i].track, labelX, labelY);
+            text(this.data[i].track, labelX, labelY); // Display track name
+
+            // Calculate the percentage for each slice
+            let percentage = ((this.data[i][this.yValue] / total) * 100).toFixed(1);
+            textSize(10);
+            text(percentage + "%", labelX, labelY + 20); // Display the percentage below the track name
 
             startAngle += sliceAngle;
         }
