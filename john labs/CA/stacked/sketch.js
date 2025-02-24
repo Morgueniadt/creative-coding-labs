@@ -11,8 +11,8 @@ let chartPosY = 400;
 let axisColour;
 let barColour;
 let axisTextColour;
-let yValues = ["Female","Male"];
-let xValue = "Age_Group";
+let yValues = ["Spotify_Streams","YouTube_Views"];
+let xValue = "Track";
 let yValueTotal = "Total";
 let barColours= [];
 
