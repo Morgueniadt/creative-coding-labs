@@ -19,9 +19,9 @@ let barColours= [];
 let scaler;
 
 function preload() {
-    data = loadTable('data/Combined.csv', 'csv', 'header');
+    // Load the CSV data for the most streamed Spotify tracks
+    data = loadTable('data/Most_Streamed_Spotify_Songs_2024.csv', 'csv', 'header');
 }
-
 function setup() {
     createCanvas(500, 500);
     angleMode(DEGREES);
@@ -87,13 +87,22 @@ function draw() {
 }
 
 function cleanData() {
-    for (let i = 0; i < data.rows.length; i++) {
-        cleanedData.push(data.rows[i].obj);
+    let trackSet = new Set(); // Use a Set to store unique track names
+
+    for (let i = 0; i < data.getRowCount(); i++) {
+        let track = data.getString(i, "Track").trim(); // Ensure consistent formatting
+        let streams = data.getString(i, "Spotify_Streams").replace(/,/g, ""); // Remove commas
+
+        streams = int(streams) || 0; // Convert to number
+
+        // Check if track is already in the Set before adding
+        if (!trackSet.has(track)) {
+            cleanedData.push({ track, streams });
+            trackSet.add(track); // Mark track as added
+        }
     }
 
-    for (let i = 0; i < cleanedData.length; i++) {
-        cleanedData[i].Female = parseInt(cleanedData[i].Female);
-        cleanedData[i].Male = parseInt(cleanedData[i].Male);
-        cleanedData[i].Total = parseInt(cleanedData[i].Total);
-    }
+    // Sort by streams (descending) and keep the top 10 tracks
+    cleanedData.sort((a, b) => b.streams - a.streams);
+    cleanedData = cleanedData.slice(0, 10); // Keep only the top 10
 }
