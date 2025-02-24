@@ -40,15 +40,9 @@ class BarChart {
             let yPos = (this.barHeight + this.gap) * i;
             fill(this.barColour);
             noStroke();
-            rect(0, yPos, this.data[i][this.yValue] * this.scaler, this.barHeight);
+            rect(0, -(this.margin+yPos), this.data[i][this.yValue] * this.scaler, this.barHeight);
 
-            // Label for each bar
-            push();
-            fill(this.axisTextColour);
-            textAlign(CENTER, LEFT);
-            translate(this.data[i][this.yValue] * this.scaler + 5, yPos + (this.barHeight / 2));
-            text(this.data[i][this.xValue], 0, 0);
-            pop();
+
         }
         pop();
     }
@@ -87,11 +81,7 @@ class BarChart {
             // Draw tick mark
             line(x, 0, x, this.tickLength);
 
-            // Draw numerical indicator
-            noStroke();
-            fill(0);
-            textAlign(CENTER, BOTTOM);
-            text(value, x, this.tickLength + 5);
+     
         }
 
         pop();
@@ -107,7 +97,7 @@ class BarChart {
             push();
             fill(this.axisTextColour);
             textAlign(RIGHT, CENTER);
-            translate(-5, yPos + (this.barHeight / 2));
+            translate(-5, -(this.margin+yPos) + (this.barHeight / 2));
             textSize(15);
             text(this.data[i][this.xValue], 0, 0);
             pop();
