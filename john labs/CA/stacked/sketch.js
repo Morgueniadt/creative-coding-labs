@@ -23,10 +23,10 @@ function preload() {
     data = loadTable('data/Most_Streamed_Spotify_Songs_2024.csv', 'csv', 'header');
 }
 function setup() {
-    createCanvas(500, 500);
+    createCanvas(2000, 2000);
     angleMode(DEGREES);
     noLoop();
-cleanData();
+    cleanData();
     barColours.push(color(23,32,54))
     barColours.push(color(12,43,23))
     
@@ -35,13 +35,13 @@ cleanData();
     gap = (chartWidth - (cleanedData.length * barWidth) - (margin * 2)) / (cleanedData.length - 1);
     scaler = chartHeight/(max(cleanedData.map(row=> row[yValueTotal])));
 
-    axisColour = color(255, 204, 0);
-    barColour = color(0, 200, 50);
+    axisColour = color(169, 169, 169);
+    barColour =color(168, 230, 207);
     axisTextColour = color(125);
 }
 
 function draw() {
-    background(200);
+    background(100);
 
     push();
     translate(chartPosX, chartPosY);
@@ -77,7 +77,6 @@ function draw() {
         push();
         translate(xPos + (barWidth / 2), 10);
         rotate(60);
-        text(cleanedData[i][xValue], 0, 0);
         pop();
     }
 
