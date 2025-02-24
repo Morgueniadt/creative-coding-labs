@@ -5,7 +5,7 @@ class BarChart {
         this.yValue = obj.yValue;
         this.chartHeight = obj.chartHeight || 300;
         this.chartWidth = obj.chartWidth || 300;
-        this.barWidth = obj.barWidth || 10;
+        this.barHeight = obj.barHeight || 10; // Adjust bar height instead of width
         this.margin = obj.margin || 10;
         this.axisThickness = obj.axisThickness || 1;
         this.axisTickThickness = obj.axisTickThickness || 1;
@@ -14,13 +14,13 @@ class BarChart {
         this.chartPosY = obj.yPos || 350;
 
         // Calculate gap between bars dynamically
-        this.gap = (this.chartWidth - (this.data.length * this.barWidth) - (this.margin * 2)) / (this.data.length - 1);
+        this.gap = (this.chartHeight - (this.data.length * this.barHeight) - (this.margin * 2)) / (this.data.length - 1);
 
         // Calculate max value from CSV data dynamically
         this.maxValue = Math.max(...this.data.map(row => parseFloat(row[this.yValue]) || 0));
 
         // Calculate scaler
-        this.scaler = this.chartHeight / this.maxValue;
+        this.scaler = this.chartWidth / this.maxValue;
 
         // Colors
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
@@ -36,21 +36,20 @@ class BarChart {
         push();
         translate(this.chartPosX, this.chartPosY);
 
-        push();
-        translate(this.margin, 0);
         for (let i = 0; i < this.data.length; i++) {
-            let xPos = (this.barWidth + this.gap) * i;
+            let yPos = (this.barHeight + this.gap) * i;
             fill(this.barColour);
             noStroke();
-            rect(xPos, 0, this.barWidth, -this.data[i][this.yValue] * this.scaler);
+            rect(0, yPos, this.data[i][this.yValue] * this.scaler, this.barHeight);
 
+            // Label for each bar
             push();
             fill(this.axisTextColour);
-            textAlign(LEFT, CENTER);
-            translate(xPos + (this.barWidth / 2), 15);
+            textAlign(CENTER, LEFT);
+            translate(this.data[i][this.yValue] * this.scaler + 5, yPos + (this.barHeight / 2));
+            text(this.data[i][this.xValue], 0, 0);
             pop();
         }
-        pop();
         pop();
     }
 
@@ -60,8 +59,12 @@ class BarChart {
         noFill();
         stroke(this.axisColour);
         strokeWeight(this.axisThickness);
-        line(0, 0, 0, -this.chartHeight);
+
+        // Render X-axis (horizontal axis)
         line(0, 0, this.chartWidth, 0);
+
+        // Render Y-axis (vertical axis)
+        line(0, 0, 0, -this.chartHeight);
         pop();
     }
 
@@ -74,23 +77,21 @@ class BarChart {
         stroke(this.axisTickColour);
         strokeWeight(this.axisTickThickness);
 
-        let tickIncrement = this.chartHeight / this.numTicks;
+        let tickIncrement = this.chartWidth / this.numTicks;
         let valueIncrement = this.maxValue / this.numTicks;
 
         for (let i = 0; i <= this.numTicks; i++) {
-            let y = -tickIncrement * i;
+            let x = tickIncrement * i;
             let value = (i * valueIncrement).toFixed(0); // Round values
 
             // Draw tick mark
-            stroke(this.axisTickColour);
-            strokeWeight(this.axisTickThickness);
-            line(0, y, -this.tickLength, y);
+            line(x, 0, x, this.tickLength);
 
             // Draw numerical indicator
             noStroke();
             fill(0);
-            textAlign(RIGHT, CENTER);
-            text(value, -this.tickLength - 5, y);
+            textAlign(CENTER, BOTTOM);
+            text(value, x, this.tickLength + 5);
         }
 
         pop();
@@ -100,21 +101,17 @@ class BarChart {
         push();
         translate(this.chartPosX, this.chartPosY);
 
-        push();
-        translate(this.margin, 0);
         for (let i = 0; i < this.data.length; i++) {
-            let xPos = (this.barWidth + this.gap) * i;
+            let yPos = (this.barHeight + this.gap) * i;
 
             push();
             fill(this.axisTextColour);
-            textAlign(LEFT, CENTER);
-            translate(xPos + (this.barWidth / 2), 15);
+            textAlign(RIGHT, CENTER);
+            translate(-5, yPos + (this.barHeight / 2));
             textSize(15);
-            rotate(60);
             text(this.data[i][this.xValue], 0, 0);
             pop();
         }
-        pop();
         pop();
     }
 
