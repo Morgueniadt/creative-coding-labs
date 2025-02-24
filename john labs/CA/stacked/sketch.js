@@ -6,15 +6,18 @@ let barWidth = 30;
 let margin = 15;
 let gap;
 let axisThickness = 5;
-let chartPosX = 50;
-let chartPosY = 600;
+let chartPosX = 100;
+let chartPosY = 900;
 let axisColour;
 let barColour;
 let axisTextColour;
-let yValues = ["Spotify_Streams","YouTube_Views"];
+let yValues = ["Spotify_Streams", "YouTube_Views"];
 let xValue = "Track";
 let yValueTotal = "Total";
-let barColours= [];
+let barColours = [];
+let maxStreams;
+let tickInterval;
+let numTicks = 10; // Define numTicks here
 
 let scaler;
 
@@ -22,21 +25,22 @@ function preload() {
     // Load the CSV data for the most streamed Spotify tracks
     data = loadTable('data/Most_Streamed_Spotify_Songs_2024.csv', 'csv', 'header');
 }
+
 function setup() {
     createCanvas(2000, 2000);
     angleMode(DEGREES);
     noLoop();
     cleanData();
-    barColours.push(color(23,32,54))
-    barColours.push(color(12,43,23))
-    
+    barColours.push(color(23, 32, 54))
+    barColours.push(color(12, 43, 23))
 
-
+    maxStreams = max(cleanedData.map(row => row.spotify + row.youtube)); // Max combined streams
+    tickInterval = maxStreams / numTicks; // Calculate tick interval based on maxStreams
     gap = (chartWidth - (cleanedData.length * barWidth) - (margin * 2)) / (cleanedData.length - 1);
-    scaler = chartHeight/(max(cleanedData.map(row=> row[yValueTotal])));
+    scaler = chartHeight / (max(cleanedData.map(row => row[yValueTotal])));
 
     axisColour = color(169, 169, 169);
-    barColour =color(168, 230, 207);
+    barColour = color(168, 230, 207);
     axisTextColour = color(225);
 }
 
@@ -51,7 +55,24 @@ function draw() {
     line(0, 0, 0, -chartHeight); // Y-axis
     line(0, 0, chartWidth, 0);   // X-axis
 
-    // Draw the bars
+    // Draw the ticks on the Y-axis
+    // Recalculate maxStreams after cleaning the data
+    maxStreams = max(cleanedData.map(row => row.spotify + row.youtube)); // Max combined streams
+    tickInterval = maxStreams / numTicks; // Recalculate tickInterval for Y-axis ticks
+
+    // Draw the ticks
+    stroke(axisColour);
+    strokeWeight(1);
+    for (let i = 0; i <= numTicks; i++) {
+        let yPos = -i * (chartHeight / numTicks); // Calculate the position for each tick
+        line(0, yPos, -5, yPos); // Draw the tick mark (small line)
+        textAlign(RIGHT, CENTER);
+        textSize(10);
+        fill(axisTextColour);
+        text(int(i * tickInterval), -10, yPos); // Label the tick mark with the corresponding value
+    }
+
+    // Draw the bars (Stacked Bars)
     push();
     translate(margin, 0);
     for (let i = 0; i < cleanedData.length; i++) {
@@ -77,7 +98,7 @@ function draw() {
         fill(axisTextColour);
         noStroke();
         textAlign(LEFT, CENTER);
-        textSize(15);
+        textSize(8);
         push();
         translate(xPos + (barWidth / 2), 10);
         rotate(60);
@@ -88,7 +109,6 @@ function draw() {
 
     pop();
 }
-
 
 function cleanData() {
     let trackSet = new Set(); // Use a Set to store unique track names
