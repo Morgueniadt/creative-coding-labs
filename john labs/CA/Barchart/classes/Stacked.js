@@ -79,21 +79,25 @@ class StackedBarChart {
     renderTicks() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        stroke(this.axisColour);
-        strokeWeight(1);
+        noFill();
+
+        // Set stroke for tick marks
+        stroke(this.axisTickColour);
+        strokeWeight(this.axisTickThickness);
 
         let tickIncrement = this.chartHeight / this.numTicks;
         let valueIncrement = this.maxValue / this.numTicks;
 
         for (let i = 0; i <= this.numTicks; i++) {
             let y = -tickIncrement * i;
-            let value = Math.round(i * valueIncrement);
+            let value = Math.floor(i * valueIncrement); 
 
             // Draw tick mark
-            stroke(0);
+            stroke(this.axisTickColour);
+            strokeWeight(this.axisTickThickness);
             line(0, y, -this.tickLength, y);
 
-            // Draw tick label
+            // Draw numerical indicator
             noStroke();
             fill(0);
             textAlign(RIGHT, CENTER);
