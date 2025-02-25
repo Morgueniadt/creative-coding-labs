@@ -2,7 +2,7 @@ class StackedBarChart {
     constructor(obj) {
         this.data = obj.data;
         this.xValue = obj.xValue;
-        this.yValue = obj.yValue;
+        this.yValues = obj.yValues;
         this.chartHeight = obj.chartHeight || 300;
         this.chartWidth = obj.chartWidth || 300;
         this.barWidth = obj.barWidth || 10;
@@ -17,7 +17,7 @@ class StackedBarChart {
         this.gap = (this.chartWidth - (this.data.length * this.barWidth) - (this.margin * 2)) / (this.data.length - 1);
 
         // Calculate max value from CSV data dynamically
-        this.maxValue = Math.max(...this.data.map(row => parseFloat(row[this.yValue]) || 0));
+        this.maxValue = Math.max(...this.data.map(row => parseFloat(row[this.yValues]) || 0));
 
         // Calculate scaler
         this.scaler = this.chartHeight / this.maxValue;
@@ -30,9 +30,8 @@ class StackedBarChart {
 
         this.numTicks = 10;
         this.tickLength = 10;
-        this.barColours = [];
-        barColours.push(color(23, 32, 54)); // Spotify color
-        barColours.push(color(12, 43, 23)); // YouTube color
+        this.barColours = obj.barColour|| color(168, 230, 207); 
+        
     }
 
     renderBars() {
@@ -124,17 +123,7 @@ class StackedBarChart {
         fill(this.axisTextColour);
         textAlign(CENTER, CENTER);
         textSize(18);
-    
-        // Check the value of yValue to determine the title
-        let titleText = "Chart Title: Most Streamed Songs";  // Default title
-    
-        if (this.yValue === 'youtube') {
-            titleText = "Most Streamed YouTube Songs";
-        } else if (this.yValue === 'spotify') {
-            titleText = "Most Streamed Spotify Songs";
-        }
-    
-        text(titleText, 0, 0);
+        text("Chart Title: Most Streamed Spotify Songs", 0, 0);
         pop();
     }
 }    
