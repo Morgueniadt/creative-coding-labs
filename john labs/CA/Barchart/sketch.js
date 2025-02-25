@@ -1,6 +1,7 @@
 let data;
 let cleanedData = [];
 let chart = [];
+let horizontalCharts = [];
 
 function preload() {
     // Load the CSV data for the most streamed Spotify tracks
@@ -76,7 +77,7 @@ function draw() {
         } else if (c instanceof PieChart) {
             // Render specific methods for PieChart
             c.renderPie();
-            // No renderLabels() for PieChart, as it's not defined
+            c.renderLabels(); 
             c.renderTitle();
             c.renderLegend();
         }
