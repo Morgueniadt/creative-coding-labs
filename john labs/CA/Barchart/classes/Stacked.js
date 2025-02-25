@@ -2,7 +2,7 @@ class StackedBarChart {
     constructor(obj) {
         this.data = obj.data;
         this.xValue = obj.xValue;
-        this.yValues = obj.yValues;
+        this.yValues = obj.yValues; // Array of keys for stacking
         this.chartHeight = obj.chartHeight || 300;
         this.chartWidth = obj.chartWidth || 300;
         this.barWidth = obj.barWidth || 10;
@@ -16,91 +16,99 @@ class StackedBarChart {
         // Calculate gap between bars dynamically
         this.gap = (this.chartWidth - (this.data.length * this.barWidth) - (this.margin * 2)) / (this.data.length - 1);
 
-        // Calculate max value from CSV data dynamically
-        this.maxValue = Math.max(...this.data.map(row => parseFloat(row[this.yValues]) || 0));
-
+        // Calculate max stacked value per category
+        this.maxValue = Math.max(...this.data.map(row => 
+            (parseFloat(row["YouTube Views"]) || 0) + (parseFloat(row["Spotify Streams"]) || 0)
+        ));
+        
         // Calculate scaler
         this.scaler = this.chartHeight / this.maxValue;
 
         // Colors
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
-        this.axisTickColour = color(0);  // Light Blue (Ticks)
-        this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
+        this.axisTickColour = color(0);  // Black (Ticks)
         this.axisTextColour = color(0, 0, 0);
-
         this.numTicks = 10;
         this.tickLength = 10;
-        this.barColours = obj.barColour|| color(168, 230, 207); 
-        
+
+        // Ensure barColours is an array
+        this.barColours = obj.barColours || [
+            color(168, 230, 207), // Color 1
+            color(255, 204, 102), // Color 2
+            color(102, 153, 255)  // Color 3
+        ];
     }
 
     renderBars() {
         push();
-        translate(margin, 0);
-        for (let i = 0; i < cleanedData.length; i++) {
-            let xPos = (barWidth + gap) * i;
-    
+        translate(this.chartPosX, this.chartPosY);
+
+        for (let i = 0; i < this.data.length; i++) {
+            let xPos = (this.barWidth + this.gap) * i;
+            let stackedHeight = 0; // Tracks height for stacking
+
             push();
-            translate(xPos, 0)
-            push()
-            for (let j = 0; j < yValues.length; j++) {
-                fill(barColours[j]); // Fill with the respective color for Spotify or YouTube
+            translate(xPos, 0);
+
+            for (let j = 0; j < this.yValues.length; j++) {
+                let value = parseFloat(this.data[i][this.yValues[j]]) || 0;
+                let barHeight = value * this.scaler;
+
+                fill(this.barColours[j % this.barColours.length]); // Cycle colors
                 noStroke();
-                rect(0, 0, barWidth, -cleanedData[i][yValues[j]] * scaler); // Draw stacked bars
-                translate(0, -cleanedData[i][yValues[j]] * scaler); // Adjust for stacking
+                rect(0, -stackedHeight, this.barWidth, -barHeight); // Stack bars
+                stackedHeight += barHeight; // Move up for next bar
             }
+
             pop();
-            pop();
+        }
+
+        pop();
     }
-}
 
     renderAxis() {
         push();
-        translate(chartPosX, chartPosY);
-        noFill();
-        stroke(axisColour);
-        strokeWeight(axisThickness);
-        line(0, 0, 0, -chartHeight); // Y-axis
-        line(0, 0, chartWidth, 0); // X-axis
+        translate(this.chartPosX, this.chartPosY);
+        stroke(this.axisColour);
+        strokeWeight(this.axisThickness);
+        line(0, 0, 0, -this.chartHeight); // Y-axis
+        line(0, 0, this.chartWidth, 0); // X-axis
         pop();
     }
 
     renderTicks() {
-       // Draw Y-axis ticks and labels
-    push();
-    translate(chartPosX, chartPosY);
-    noFill();
-    stroke(axisColour);
-    strokeWeight(1);
-
-    let tickIncrement = chartHeight / numTicks;
-    let valueIncrement = Total / numTicks;
-
-    for (let i = 0; i <= numTicks; i++) {
-        let y = -tickIncrement * i;
-        let value = Math.floor(i * valueIncrement).toFixed(0); // Round values
-
-        // Draw tick mark
-        stroke(0);
+        push();
+        translate(this.chartPosX, this.chartPosY);
+        stroke(this.axisColour);
         strokeWeight(1);
-        line(0, y, -tickLength, y);
 
-        // Draw numerical indicator
-        noStroke();
-        fill(0);
-        textAlign(RIGHT, CENTER);
-        text(value, -tickLength - 5, y);    
-    }
+        let tickIncrement = this.chartHeight / this.numTicks;
+        let valueIncrement = this.maxValue / this.numTicks;
 
-    pop();
+        for (let i = 0; i <= this.numTicks; i++) {
+            let y = -tickIncrement * i;
+            let value = Math.round(i * valueIncrement);
+
+            // Draw tick mark
+            stroke(0);
+            line(0, y, -this.tickLength, y);
+
+            // Draw tick label
+            noStroke();
+            fill(0);
+            textAlign(RIGHT, CENTER);
+            text(value, -this.tickLength - 5, y);
+        }
+
+        pop();
     }
 
     renderLabels() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        rotate(-90)
-        push();
+        rotate(-90);
         translate(this.margin, 0);
+
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
 
@@ -108,12 +116,12 @@ class StackedBarChart {
             fill(this.axisTextColour);
             textAlign(LEFT, CENTER);
             translate(xPos + (this.barWidth / 2), 15);
-            textSize(15);
-            rotate(90)
+            rotate(90);
+            textSize(12);
             text(this.data[i][this.xValue], 0, 0);
             pop();
         }
-        pop();
+
         pop();
     }
 
@@ -123,8 +131,8 @@ class StackedBarChart {
         fill(this.axisTextColour);
         textAlign(CENTER, CENTER);
         textSize(18);
-        text("Chart Title: Most Streamed Spotify Songs", 0, 0);
+        text("Stacked Bar Chart", 0, 0);
         pop();
     }
-}    
 
+}
