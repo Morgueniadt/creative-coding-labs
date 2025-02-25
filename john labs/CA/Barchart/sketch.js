@@ -78,7 +78,7 @@ function setup() {
         margin: 15, 
         axisThickness: 2, 
         xPos: 750, 
-        yPos: 3000  
+        yPos: 5000  
     }));
 }
 
@@ -95,19 +95,19 @@ function draw() {
             c.renderTicks();
             c.renderLabels(); // Render labels for BarChart
             c.renderTitle();
-        } else if (c instanceof HorizontalBarChart) {
+        }  else if (c instanceof PieChart) {
+            // Render specific methods for PieChart
+            c.renderPie();
+            c.renderLabels(); 
+            c.renderTitle();
+            c.renderLegend();
+        } else if (c instanceof StackedBarChart) {
             // Render specific methods for HorizontalBarChart
             c.renderBars();
             c.renderAxis();
             c.renderTicks();
             c.renderLabels(); // Render labels for HorizontalBarChart
             c.renderTitle();
-        } else if (c instanceof PieChart) {
-            // Render specific methods for PieChart
-            c.renderPie();
-            c.renderLabels(); 
-            c.renderTitle();
-            c.renderLegend();
         }
     });
 
