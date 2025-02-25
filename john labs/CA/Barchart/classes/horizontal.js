@@ -35,16 +35,33 @@ class HorizontalBarChart {
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        rotate(-90)
+        rotate(-90);
         push();
         translate(this.margin, 0);
-        
+    
+        // Loop through each data point and apply a dynamic color shade
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
-            fill(this.barColour);
+            
+            // Check the yValue and assign a color based on that
+            let barColor;
+            if (this.yValue === 'youtube') {
+                // Vary the shade of red based on index
+                let redIntensity = map(i, 0, this.data.length - 1, 100, 255); // Shades of red
+                barColor = color(redIntensity, 0, 0);  // Vary red from dark to light
+            } else if (this.yValue === 'spotify') {
+                // Vary the shade of green based on index
+                let greenIntensity = map(i, 0, this.data.length - 1, 100, 255); // Shades of green
+                barColor = color(0, greenIntensity, 0);  // Vary green from dark to light
+            } else {
+                // Default color if neither youtube nor spotify
+                barColor = color(168, 230, 207); // Default pastel green
+            }
+    
+            fill(barColor);
             noStroke();
             rect(xPos, 0, this.barWidth, -this.data[i][this.yValue] * this.scaler);
-
+    
             push();
             fill(this.axisTextColour);
             textAlign(LEFT, CENTER);
@@ -54,6 +71,7 @@ class HorizontalBarChart {
         pop();
         pop();
     }
+    
 
     renderAxis() {
         push();
@@ -79,7 +97,7 @@ class HorizontalBarChart {
 
         let tickIncrement = this.chartHeight / this.numTicks;
         let valueIncrement = this.maxValue / this.numTicks;
-
+        
         for (let i = 0; i <= this.numTicks; i++) {
             let y = -tickIncrement * i;
             let value = Math.floor(i * valueIncrement).toFixed(0); // Round values
