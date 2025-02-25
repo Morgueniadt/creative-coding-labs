@@ -21,7 +21,7 @@ function setup() {
     chart.push(new BarChart({
         data: cleanedData,
         xValue: "track",  // Use track names for x-axis
-        yValue: "streams",  // Use streams for y-axis
+        yValue: "spotify",  // Use spotify for y-axis
         chartHeight: 300, 
         chartWidth: 600, 
         barWidth: 20, 
@@ -35,11 +35,11 @@ function setup() {
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
-        yValue: "streams",  
+        yValue: "spotify",  
         chartHeight: 300, 
         chartWidth: 600, 
         barHeight: 20, 
-        margin: 10, 
+        margin: 15, 
         axisThickness: 2, 
         xPos: 350, 
         yPos: 1000
@@ -49,11 +49,11 @@ function setup() {
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
-        yValue: "streams",  
+        yValue: "spotify",  
         chartHeight: 300, 
         chartWidth: 600, 
         barHeight: 20, 
-        margin: 10, 
+        margin: 15, 
         axisThickness: 2, 
         xPos: 350, 
         yPos: 1600  // Adjust position for the second chart
@@ -62,7 +62,7 @@ function setup() {
     chart.push(new PieChart({
         data: cleanedData,
         xValue: "track",  
-        yValue: "streams",  
+        yValue: "spotify",  
         chartRadius: 300, 
         chartPosX: 650, 
         chartPosY: 2000,
@@ -113,18 +113,20 @@ function cleanData() {
 
     for (let i = 0; i < data.getRowCount(); i++) {
         let track = data.getString(i, "Track").trim(); // Ensure consistent formatting
-        let streams = data.getString(i, "Spotify_Streams").replace(/,/g, ""); // Remove commas
+        let spotify = data.getString(i, "Spotify_Streams").replace(/,/g, ""); // Remove commas
+        let youtube = data.getString(i, "YouTube_Views").replace(/,/g, "");
 
-        streams = int(streams) || 0; // Convert to number
+        spotify = int(spotify) || 0; // Convert to number
+        youtube = int(youtube) || 0;
 
         // Check if track is already in the Set before adding
         if (!trackSet.has(track)) {
-            cleanedData.push({ track, streams });
+            cleanedData.push({ track, spotify });
             trackSet.add(track); // Mark track as added
         }
     }
 
     // Sort by streams (descending) and keep the top 10 tracks
-    cleanedData.sort((a, b) => b.streams - a.streams);
+    cleanedData.sort((a, b) => b.spotify - a.spotify);
     cleanedData = cleanedData.slice(0, 10); // Keep only the top 10
 }

@@ -3,7 +3,7 @@ class HorizontalBarChart {
         this.data = obj.data;
         this.xValue = obj.xValue;
         this.yValue = obj.yValue;
-        this.chartHeight = obj.chartHeight || 300;
+        this.chartHeight = obj.chartHeight || 150;
         this.chartWidth = obj.chartWidth || 300;
         this.barHeight = obj.barHeight || 10; // Adjust bar height instead of width
         this.margin = obj.margin || 10;
