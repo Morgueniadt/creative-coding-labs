@@ -35,9 +35,10 @@ class HorizontalBarChart {
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
-
+        rotate(-90)
         push();
         translate(this.margin, 0);
+        
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
             fill(this.barColour);
@@ -57,6 +58,7 @@ class HorizontalBarChart {
     renderAxis() {
         push();
         translate(this.chartPosX, this.chartPosY);
+        rotate(-90)
         noFill();
         stroke(this.axisColour);
         strokeWeight(this.axisThickness);
@@ -68,6 +70,7 @@ class HorizontalBarChart {
     renderTicks() {
         push();
         translate(this.chartPosX, this.chartPosY);
+        rotate(-90)
         noFill();
 
         // Set stroke for tick marks
@@ -99,7 +102,7 @@ class HorizontalBarChart {
     renderLabels() {
         push();
         translate(this.chartPosX, this.chartPosY);
-
+        rotate(-90)
         push();
         translate(this.margin, 0);
         for (let i = 0; i < this.data.length; i++) {
@@ -110,7 +113,7 @@ class HorizontalBarChart {
             textAlign(LEFT, CENTER);
             translate(xPos + (this.barWidth / 2), 15);
             textSize(15);
-            rotate(60);
+            rotate(90)
             text(this.data[i][this.xValue], 0, 0);
             pop();
         }
@@ -120,9 +123,9 @@ class HorizontalBarChart {
 
     renderTitle() {
         push();
-        translate(this.chartPosX + this.chartWidth / 2, this.chartPosY - this.chartHeight - 20);
+        translate(-this.chartPosX + this.chartWidth / 2, this.chartPosY - this.chartHeight - 20);
         fill(this.axisTextColour);
-        textAlign(CENTER, CENTER);
+        textAlign(CENTER ,CENTER);
         textSize(18);
         text("Chart Title: Most Streamed Spotify Songs", 0, 0);
         pop();

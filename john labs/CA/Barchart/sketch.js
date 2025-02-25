@@ -31,7 +31,7 @@ function setup() {
         yPos: 0
     }));
 
-    // Create the first horizontal bar chart and push it into the horizontalCharts array
+   /* // Create the first horizontal bar chart and push it into the horizontalCharts array
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
@@ -43,20 +43,20 @@ function setup() {
         axisThickness: 2, 
         xPos: 350, 
         yPos: 1000
-    }));
+    }));*/
 
     // Create the second horizontal bar chart and push it into the horizontalCharts array
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
         yValue: "youtube",  
-        chartHeight: 300, 
+        chartHeight: 600, 
         chartWidth: 600, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
-        xPos: 350, 
-        yPos: 1600  // Adjust position for the second chart
+        xPos: 750, 
+        yPos: 2000  // Adjust position for the second chart
     }));
 
     chart.push(new PieChart({
@@ -65,7 +65,7 @@ function setup() {
         yValue: "spotify",  
         chartRadius: 300, 
         chartPosX: 650, 
-        chartPosY: 2000,
+        chartPosY: 2500,
     }));
 }
 
