@@ -106,7 +106,7 @@ class StackedBarChart {
     renderLabels() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        rotate(-90);
+        
         translate(this.margin, 0);
 
         for (let i = 0; i < this.data.length; i++) {
@@ -116,7 +116,7 @@ class StackedBarChart {
             fill(this.axisTextColour);
             textAlign(LEFT, CENTER);
             translate(xPos + (this.barWidth / 2), 15);
-            rotate(90);
+            rotate(60);
             textSize(12);
             text(this.data[i][this.xValue], 0, 0);
             pop();
