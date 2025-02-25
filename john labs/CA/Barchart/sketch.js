@@ -55,7 +55,7 @@ function setup() {
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
-        xPos: 750, 
+        xPos: 900, 
         yPos: 2500  
     }));
 
