@@ -10,7 +10,7 @@ function preload() {
 
 function setup() {
     // Set up the canvas and other configurations
-    createCanvas(3000, 3000);
+    createCanvas(3000, 10000);
     angleMode(DEGREES);
     noLoop();
 
@@ -31,19 +31,19 @@ function setup() {
         yPos: 0
     }));
 
-   /* // Create the first horizontal bar chart and push it into the horizontalCharts array
+    // Create the first horizontal bar chart and push it into the horizontalCharts array
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
         yValue: "spotify",  
-        chartHeight: 300, 
+        chartHeight: 600, 
         chartWidth: 600, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
-        xPos: 350, 
-        yPos: 1000
-    }));*/
+        xPos: 750, 
+        yPos: 1500
+    }));
 
     // Create the second horizontal bar chart and push it into the horizontalCharts array
     horizontalCharts.push(new HorizontalBarChart({
@@ -56,7 +56,7 @@ function setup() {
         margin: 15, 
         axisThickness: 2, 
         xPos: 750, 
-        yPos: 2000  // Adjust position for the second chart
+        yPos: 2500  // Adjust position for the second chart
     }));
 
     chart.push(new PieChart({
@@ -65,7 +65,7 @@ function setup() {
         yValue: "spotify",  
         chartRadius: 300, 
         chartPosX: 650, 
-        chartPosY: 2500,
+        chartPosY: 3500,
     }));
 }
 

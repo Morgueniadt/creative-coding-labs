@@ -123,11 +123,21 @@ class HorizontalBarChart {
 
     renderTitle() {
         push();
-        translate(-this.chartPosX + this.chartWidth / 2, this.chartPosY - this.chartHeight - 20);
+        translate(this.chartPosX + this.chartWidth / 2, this.chartPosY - this.chartHeight - 20);
         fill(this.axisTextColour);
-        textAlign(CENTER ,CENTER);
+        textAlign(CENTER, CENTER);
         textSize(18);
-        text("Chart Title: Most Streamed Spotify Songs", 0, 0);
+    
+        // Check the value of yValue to determine the title
+        let titleText = "Chart Title: Most Streamed Songs";  // Default title
+    
+        if (this.yValue === 'youtube') {
+            titleText = "Most Streamed YouTube Songs";
+        } else if (this.yValue === 'spotify') {
+            titleText = "Most Streamed Spotify Songs";
+        }
+    
+        text(titleText, 0, 0);
         pop();
     }
-}
+}    
