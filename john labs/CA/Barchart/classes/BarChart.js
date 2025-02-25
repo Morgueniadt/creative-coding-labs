@@ -34,29 +34,23 @@ class BarChart {
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        let barColor;
+        let barColor = color(168, 230, 207);  // Assign a color
         push();
         translate(this.margin, 0);
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
-            if (this.yValue === 'spotify') {
-                // Vary the shade of green based on index
-                let greenIntensity = map(i, 0, this.data.length - 1, 100, 255); // Shades of green
-                barColor = color(0, greenIntensity, 0);  // Vary green from dark to light
-            }
+            let barHeight = parseFloat(this.data[i][this.yValue]) || 0;
+    
             fill(barColor);
             noStroke();
-            rect(xPos, 0, this.barWidth, -this.data[i][this.yValue] * this.scaler);
-
-            push();
-            fill(this.axisTextColour);
-            textAlign(LEFT, CENTER);
-            translate(xPos + (this.barWidth / 2), 15);
-            pop();
+            rect(xPos, 0, this.barWidth, -barHeight * this.scaler);
+    
+            
         }
         pop();
         pop();
     }
+    
 
     renderAxis() {
         push();
