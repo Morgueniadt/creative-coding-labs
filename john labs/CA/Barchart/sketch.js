@@ -1,7 +1,7 @@
 let data;
 let cleanedData = [];
 let chart = [];
-let horizontalCharts = [];
+let horizontalCharts = []; // Array to store the horizontal bar charts
 
 function preload() {
     // Load the CSV data for the most streamed Spotify tracks
@@ -31,7 +31,8 @@ function setup() {
         yPos: 0
     }));
 
-    chart.push(new HorizontalBarChart({
+    // Create the first horizontal bar chart and push it into the horizontalCharts array
+    horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
         yValue: "streams",  
@@ -44,13 +45,27 @@ function setup() {
         yPos: 1000
     }));
 
+    // Create the second horizontal bar chart and push it into the horizontalCharts array
+    horizontalCharts.push(new HorizontalBarChart({
+        data: cleanedData,
+        xValue: "track",  
+        yValue: "streams",  
+        chartHeight: 300, 
+        chartWidth: 600, 
+        barHeight: 20, 
+        margin: 10, 
+        axisThickness: 2, 
+        xPos: 350, 
+        yPos: 1600  // Adjust position for the second chart
+    }));
+
     chart.push(new PieChart({
         data: cleanedData,
         xValue: "track",  
         yValue: "streams",  
         chartRadius: 300, 
         chartPosX: 650, 
-        chartPosY: height / 2,
+        chartPosY: 2000,
     }));
 }
 
@@ -58,7 +73,7 @@ function draw() {
     // Draw the background
     background(220);
 
-    // Loop through each chart in the chart array
+    // Loop through each chart in the chart array and render it
     chart.forEach(c => {
         if (c instanceof BarChart) {
             // Render specific methods for BarChart
@@ -82,8 +97,16 @@ function draw() {
             c.renderLegend();
         }
     });
-}
 
+    // Render the horizontal bar charts stored in the horizontalCharts array
+    horizontalCharts.forEach(c => {
+        c.renderBars();
+        c.renderAxis();
+        c.renderTicks();
+        c.renderLabels(); // Render labels for HorizontalBarChart
+        c.renderTitle();
+    });
+}
 
 function cleanData() {
     let trackSet = new Set(); // Use a Set to store unique track names
