@@ -41,7 +41,7 @@ function setup() {
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
-        xPos: 750, 
+        xPos: 900, 
         yPos: 1500
     }));
 
@@ -56,7 +56,7 @@ function setup() {
         margin: 15, 
         axisThickness: 2, 
         xPos: 750, 
-        yPos: 2500  // Adjust position for the second chart
+        yPos: 2500  
     }));
 
     chart.push(new PieChart({
@@ -64,8 +64,21 @@ function setup() {
         xValue: "track",  
         yValue: "spotify",  
         chartRadius: 300, 
-        chartPosX: 650, 
+        chartPosX: 750, 
         chartPosY: 3500,
+    }));
+
+    chart.push(new StackedBarChart({
+        data: cleanedData,
+        xValue: "track",  
+        yValues:  ["spotify", "youtube"],
+        chartHeight: 600, 
+        chartWidth: 600, 
+        barHeight: 20, 
+        margin: 15, 
+        axisThickness: 2, 
+        xPos: 750, 
+        yPos: 3000  
     }));
 }
 
