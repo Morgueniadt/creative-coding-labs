@@ -8,12 +8,6 @@ class PieChart {
         this.chartPosY = options.chartPosY;
     }
 
-    render() {
-        this.renderPie();
-        this.renderLabels();
-        this.renderTitle();
-    }
-
     renderPie() {
         push();
         translate(this.chartPosX, this.chartPosY);
@@ -46,7 +40,7 @@ class PieChart {
             let labelY = sin(labelAngle) * (this.chartRadius / 1.5);
 
             fill(0);
-            textSize(12);
+            textSize(12);  // Smaller label text
             textAlign(CENTER, CENTER);
             text(this.data[i].track, labelX, labelY); // Display track name
 
@@ -62,7 +56,7 @@ class PieChart {
     renderTitle() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        textSize(16);
+        textSize(14);  // Smaller title text
         textAlign(CENTER, CENTER);
         fill(0);
         text("Top 10 Most Streamed Spotify Tracks (Pie)", 0, -this.chartRadius - 30);

@@ -16,13 +16,6 @@ class HorizontalBarChart {
         this.scaler = this.chartWidth / this.maxValue;
     }
 
-    render() {
-        this.renderBars();
-        this.renderAxis();
-        this.renderTicks();
-        this.renderTitle();
-    }
-
     renderBars() {
         push();
         translate(this.xPos, this.yPos);
@@ -61,7 +54,7 @@ class HorizontalBarChart {
     renderTitle() {
         push();
         translate(this.xPos + this.chartWidth / 2, this.yPos - this.chartHeight - 20);
-        textSize(16);
+        textSize(14);  // Smaller title text
         textAlign(CENTER);
         text("Top 10 Most Streamed Spotify Songs (Horizontal)", 0, 0);
         pop();

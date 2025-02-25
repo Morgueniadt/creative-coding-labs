@@ -13,45 +13,43 @@ function setup() {
     angleMode(DEGREES);
     noLoop();
 
-    // Clean the data to process it for the charts
+    // Clean the data to process it for the bar chart
     cleanData();
 
-    // Create the BarChart instance
+    // Create the bar chart instances for Spotify tracks' streams with smaller size
     charts.push(new BarChart({
         data: cleanedData,
         xValue: "track",  // Use track names for x-axis
         yValue: "streams",  // Use streams for y-axis
-        chartHeight: 600, 
-        chartWidth: 600, 
-        barWidth: 40, 
-        margin: 15, 
-        axisThickness: 3, 
-        xPos: 50, 
-        yPos: 650
+        chartHeight: 400,  // Reduced height
+        chartWidth: 400,   // Reduced width
+        barWidth: 30,      // Smaller bars
+        margin: 10,        // Reduced margin
+        axisThickness: 2,  // Thinner axis
+        xPos: 100,         // Adjusted x position
+        yPos: 450          // Adjusted y position
     }));
 
-    // Create the HorizontalBarChart instance
     charts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  // Use track names for x-axis
         yValue: "streams",  // Use streams for y-axis
-        chartHeight: 600, 
-        chartWidth: 600, 
-        barWidth: 40, 
-        margin: 15, 
-        axisThickness: 3, 
-        xPos: 650, 
-        yPos: 650
+        chartHeight: 400,  // Reduced height
+        chartWidth: 400,   // Reduced width
+        barWidth: 30,      // Smaller bars
+        margin: 10,        // Reduced margin
+        axisThickness: 2,  // Thinner axis
+        xPos: 100,         // Adjusted x position
+        yPos: 450          // Adjusted y position
     }));
 
-    // Create the PieChart instance
     charts.push(new PieChart({
         data: cleanedData,
         xValue: "track",  // Use track names for segments
         yValue: "streams",  // Use streams for segment size
-        chartRadius: 300, 
-        chartPosX: width / 2, 
-        chartPosY: height / 3,
+        chartRadius: 200,   // Smaller pie radius
+        chartPosX: width / 2,  // Center pie chart
+        chartPosY: height / 2  // Center pie chart
     }));
 }
 
