@@ -10,7 +10,7 @@ let chartPosX = 100;
 let chartPosY = 900;
 let axisColour;
 let barColour;
-let axisTextColour;
+let tickLength = 10;
 let Total;
 let yValues = ["spotify", "youtube"];
 let xValue = "track";
@@ -107,13 +107,15 @@ function draw() {
         let value = Math.floor(i * valueIncrement).toFixed(0); // Round values
 
         // Draw tick mark
-        line(0, y, -15, y);
+        stroke(0);
+        strokeWeight(1);
+        line(0, y, -tickLength, y);
 
         // Draw numerical indicator
         noStroke();
-        fill(axisTextColour);
+        fill(0);
         textAlign(RIGHT, CENTER);
-        text(value, -20, y);
+        text(value, -tickLength - 5, y);    
     }
 
     pop();
