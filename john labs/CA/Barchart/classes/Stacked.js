@@ -19,7 +19,7 @@ class StackedBarChart {
         // Calculate max stacked value per category
         this.maxValue = Math.max(...this.data.map(row => 
             (parseFloat(row["YouTube Views"]) || 0) + (parseFloat(row["Spotify Streams"]) || 0)
-        ));
+        ));// ... (spread operator) spreads the list into individual numbers so Math.max() can compare them.
         
         // Calculate scaler
         this.scaler = this.chartHeight / this.maxValue;
