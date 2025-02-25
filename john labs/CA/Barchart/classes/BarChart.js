@@ -25,7 +25,6 @@ class BarChart {
         // Colors
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
         this.axisTickColour = color(0);  // Light Blue (Ticks)
-        this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
         this.axisTextColour = color(0, 0, 0);
 
         this.numTicks = 10;
@@ -35,12 +34,17 @@ class BarChart {
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
-
+        let barColor;
         push();
         translate(this.margin, 0);
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
-            fill(this.barColour);
+            if (this.yValue === 'spotify') {
+                // Vary the shade of green based on index
+                let greenIntensity = map(i, 0, this.data.length - 1, 100, 255); // Shades of green
+                barColor = color(0, greenIntensity, 0);  // Vary green from dark to light
+            }
+            fill(barColor);
             noStroke();
             rect(xPos, 0, this.barWidth, -this.data[i][this.yValue] * this.scaler);
 

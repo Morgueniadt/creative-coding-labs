@@ -6,14 +6,29 @@ class PieChart {
         this.chartRadius = options.chartRadius;
         this.chartPosX = options.chartPosX;
         this.chartPosY = options.chartPosY;
-        this.colors = this.generateUniqueColors(this.data.length);  // Store unique colors for tracks
+        this.colors = this.generateColors(this.data.length);  // Store unique colors for tracks
     }
 
-    // Generate a list of unique colors for each track
-    generateUniqueColors(num) {
+    // Generate a list of unique colors for each track with gradient logic
+    generateColors(num) {
         let colors = [];
         for (let i = 0; i < num; i++) {
-            colors.push(color(random(255), random(255), random(255))); // Generate a random color
+            let colorValue;
+
+            // Apply gradient logic based on yValue (either 'youtube' or 'spotify')
+            if (this.yValue === 'youtube') {
+                // Shades of red (from dark red to light red)
+                let redIntensity = map(i, 0, num - 1, 100, 255); // From dark to light red
+                colorValue = color(redIntensity, 0, 0);
+            } else if (this.yValue === 'spotify') {
+                // Shades of green (from dark green to light green)
+                let greenIntensity = map(i, 0, num - 1, 100, 255); // From dark to light green
+                colorValue = color(0, greenIntensity, 0);
+            } else {
+                // Default color if neither youtube nor spotify (light gray)
+                colorValue = color(169, 169, 169); // Light gray
+            }
+            colors.push(colorValue);
         }
         return colors;
     }
@@ -74,7 +89,7 @@ class PieChart {
         textSize(16);
         textAlign(CENTER, CENTER);
         fill(0);
-        text("Top 10 Most Streamed Spotify Tracks", 0, -this.chartRadius - 30);
+        text("Top 10 Most Streamed Tracks", 0, -this.chartRadius - 30);
         pop();
     }
 
