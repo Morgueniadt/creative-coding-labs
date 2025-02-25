@@ -78,6 +78,7 @@ function draw() {
             c.renderPie();
             // No renderLabels() for PieChart, as it's not defined
             c.renderTitle();
+            c.renderLegend();
         }
     });
 }

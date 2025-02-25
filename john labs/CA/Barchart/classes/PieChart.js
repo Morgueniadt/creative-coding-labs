@@ -1,34 +1,24 @@
 class PieChart {
-    constructor(obj) {
-        this.data = obj.data;
-        this.xValue = obj.xValue;
-        this.yValue = obj.yValue;
-        this.chartRadius = obj.chartRadius;
-        this.chartPosX = obj.chartPosX || 50 ;
-        this.chartPosY = obj.chartPosY || 650;
-
-        // Predefined colors for each track
-        this.colors = [
-            color(255, 99, 132),    // Color 1
-            color(54, 162, 235),    // Color 2
-            color(255, 206, 86),    // Color 3
-            color(75, 192, 192),    // Color 4
-            color(153, 102, 255),   // Color 5
-            color(255, 159, 64),    // Color 6
-            color(255, 99, 132),    // Color 7
-            color(54, 162, 235),    // Color 8
-            color(255, 206, 86),    // Color 9
-            color(75, 192, 192)     // Color 10
-        ];
+    constructor(options) {
+        this.data = options.data;
+        this.xValue = options.xValue;
+        this.yValue = options.yValue;
+        this.chartRadius = options.chartRadius;
+        this.chartPosX = options.chartPosX;
+        this.chartPosY = options.chartPosY;
+        this.colors = this.generateUniqueColors(this.data.length);  // Store unique colors for tracks
     }
 
-    render() {
-        this.renderPie();
-        this.renderLabels();
-        this.renderTitle();
-        this.renderLegend();
+    // Generate a list of unique colors for each track
+    generateUniqueColors(num) {
+        let colors = [];
+        for (let i = 0; i < num; i++) {
+            colors.push(color(random(255), random(255), random(255))); // Generate a random color
+        }
+        return colors;
     }
 
+    // Render the pie chart with segments
     renderPie() {
         push();
         translate(this.chartPosX, this.chartPosY);
@@ -36,9 +26,10 @@ class PieChart {
         let total = this.data.reduce((sum, row) => sum + row[this.yValue], 0);
         let startAngle = 0;
 
+        // Draw each slice
         for (let i = 0; i < this.data.length; i++) {
             let sliceAngle = (this.data[i][this.yValue] / total) * 360;
-            fill(this.colors[i]);  // Assign a color from the array
+            fill(this.colors[i]); // Use the unique color for each track
             noStroke();
             arc(0, 0, this.chartRadius * 2, this.chartRadius * 2, startAngle, startAngle + sliceAngle, PIE);
             startAngle += sliceAngle;
@@ -46,6 +37,7 @@ class PieChart {
         pop();
     }
 
+    // Render the labels and percentages for the pie chart
     renderLabels() {
         push();
         translate(this.chartPosX, this.chartPosY);
@@ -53,9 +45,10 @@ class PieChart {
         let total = this.data.reduce((sum, row) => sum + row[this.yValue], 0);
         let startAngle = 0;
 
+        // Render labels and percentages on the pie chart slices
         for (let i = 0; i < this.data.length; i++) {
             let sliceAngle = (this.data[i][this.yValue] / total) * 360;
-            let labelAngle = startAngle + sliceAngle / 2;  // Middle of the slice
+            let labelAngle = startAngle + sliceAngle / 2; // Middle of the slice
 
             let labelX = cos(labelAngle) * (this.chartRadius / 1.5);
             let labelY = sin(labelAngle) * (this.chartRadius / 1.5);
@@ -65,6 +58,7 @@ class PieChart {
             textAlign(CENTER, CENTER);
             text(this.data[i].track, labelX, labelY); // Display track name
 
+            // Calculate the percentage for each slice
             let percentage = ((this.data[i][this.yValue] / total) * 100).toFixed(1);
             textSize(10);
             text(percentage + "%", labelX, labelY + 20); // Display the percentage below the track name
@@ -74,38 +68,31 @@ class PieChart {
         pop();
     }
 
+    // Render the chart title
     renderTitle() {
         push();
         translate(this.chartPosX, this.chartPosY);
         textSize(16);
         textAlign(CENTER, CENTER);
         fill(0);
-        text("Top 10 Most Streamed Spotify Tracks (Pie)", 0, -this.chartRadius - 30);
+        text("Top 10 Most Streamed Spotify Tracks", 0, -this.chartRadius - 30);
         pop();
     }
 
+    // Render the legend to the side
     renderLegend() {
-        // Position for the legend
-        let legendX = this.chartPosX + this.chartRadius + 20;
-        let legendY = this.chartPosY - this.chartRadius;
+        let xOffset = this.chartPosX + this.chartRadius + 50;  // Position the legend to the right of the chart
+        let yOffset = this.chartPosY - this.chartRadius;
 
-        push();
-        translate(legendX, legendY);
-        textSize(14);
-        fill(0);
-        textAlign(LEFT);
-        text("Track Legend:", 0, 0);
-
-        // Render the legend
         for (let i = 0; i < this.data.length; i++) {
             fill(this.colors[i]);
             noStroke();
-            rect(0, (i + 1) * 20, 15, 15); // Color box
+            rect(xOffset, yOffset + i * 25, 20, 20);  // Draw the color box
+
             fill(0);
             textSize(12);
-            text(this.data[i].track, 20, (i + 1) * 20 + 7); // Track name next to color box
+            textAlign(LEFT, CENTER);
+            text(this.data[i].track, xOffset + 30, yOffset + i * 25 + 10);  // Display the track name next to the color box
         }
-
-        pop();
     }
 }
