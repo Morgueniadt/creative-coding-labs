@@ -25,7 +25,7 @@ class HorizontalBarChart {
         // Colors
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
         this.axisTickColour = color(0);  // Light Blue (Ticks)
-        this.barColour = color(168, 230, 207);  // Pastel Green (Bars)
+        this.barColour = obj.barColour || color(168, 230, 207);  // Pastel Green (Bars)
         this.axisTextColour = color(0, 0, 0);
 
         this.numTicks = 10;
@@ -42,31 +42,13 @@ class HorizontalBarChart {
         // Loop through each data point and apply a dynamic color shade
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
-            
-            // Check the yValue and assign a color based on that
-            let barColor;
-            if (this.yValue === 'youtube') {
-                // Vary the shade of red based on index
-                let redIntensity = map(i, 0, this.data.length - 1, 100, 255); // Shades of red
-                barColor = color(redIntensity, 0, 0);  // Vary red from dark to light
-            } else if (this.yValue === 'spotify') {
-                // Vary the shade of green based on index
-                let greenIntensity = map(i, 0, this.data.length - 1, 100, 255); // Shades of green
-                barColor = color(0, greenIntensity, 0);  // Vary green from dark to light
-            } else {
-                // Default color if neither youtube nor spotify
-                barColor = color(168, 230, 207); // Default pastel green
-            }
+
     
-            fill(barColor);
+            fill(this.barColour);
             noStroke();
             rect(xPos, 0, this.barWidth, -this.data[i][this.yValue] * this.scaler);
     
-            push();
-            fill(this.axisTextColour);
-            textAlign(LEFT, CENTER);
-            translate(xPos + (this.barWidth / 2), 15);
-            pop();
+        
         }
         pop();
         pop();
@@ -108,10 +90,15 @@ class HorizontalBarChart {
             line(0, y, -this.tickLength, y);
 
             // Draw numerical indicator
+            push()
+            translate(-this.tickLength - 5, y)
+            rotate(45)
             noStroke();
             fill(0);
+            textSize(16)
             textAlign(RIGHT, CENTER);
-            text(value, -this.tickLength - 5, y);
+            text(value, 0,0);
+            pop()
         }
 
         pop();
