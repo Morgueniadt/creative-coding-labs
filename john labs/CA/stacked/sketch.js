@@ -16,7 +16,7 @@ let yValues = ["spotify", "youtube"];
 let xValue = "track";
 let maxStreams;
 let maxViews;
-let barColours= [];
+let barColours = [];
 let tickInterval;
 let numTicks = 10; // Define numTicks here
 let scaler;
@@ -31,12 +31,15 @@ function setup() {
     angleMode(DEGREES);
     noLoop();
     cleanData();
-    barColours.push(color(23,32,54))
-    barColours.push(color(12,43,23))
+    
+    // Define colors for each part of the stacked bar
+    barColours.push(color(23, 32, 54)); // Spotify color
+    barColours.push(color(12, 43, 23)); // YouTube color
+    
     // Determine max values for both Spotify and YouTube streams
     maxStreams = max(cleanedData.map(row => row.spotify));
     maxViews = max(cleanedData.map(row => row.youtube)); 
-    Total = maxStreams + maxViews
+    Total = maxStreams + maxViews;
 
     tickInterval = Total / numTicks; // Calculate tick interval based on Total streams
     gap = (chartWidth - (cleanedData.length * barWidth) - (margin * 2)) / (cleanedData.length - 1);
@@ -66,28 +69,53 @@ function draw() {
         translate(xPos, 0)
         push()
         for (let j = 0; j < yValues.length; j++) {
-            fill(barColours[j]);
+            fill(barColours[j]); // Fill with the respective color for Spotify or YouTube
             noStroke();
-            rect(0,0, barWidth, -cleanedData[i][yValues[j]] * scaler);
-            translate(0, -cleanedData[i][yValues[j]]* scaler);
+            rect(0, 0, barWidth, -cleanedData[i][yValues[j]] * scaler); // Draw stacked bars
+            translate(0, -cleanedData[i][yValues[j]] * scaler); // Adjust for stacking
         }
         pop();
         pop();
 
-        
-            fill(axisTextColour);
-            noStroke();
-            textAlign(LEFT, CENTER);
-            textSize(10);
-            push();
-            translate(xPos + (barWidth / 2), 10);
-            rotate(60);
-            text(cleanedData[i][xValue], 0, 0); // Display track name
-            pop();
-        
+        // Draw track name on X-axis with angle
+        fill(axisTextColour);
+        noStroke();
+        textAlign(LEFT, CENTER);
+        textSize(10);
+        push();
+        translate(xPos + (barWidth / 2), 10);
+        rotate(60);
+        text(cleanedData[i][xValue], 0, 0); // Display track name
+        pop();
     }
 
     pop();
+    pop();
+
+    // Draw Y-axis ticks and labels
+    push();
+    translate(chartPosX, chartPosY);
+    noFill();
+    stroke(axisColour);
+    strokeWeight(1);
+
+    let tickIncrement = chartHeight / numTicks;
+    let valueIncrement = Total / numTicks;
+
+    for (let i = 0; i <= numTicks; i++) {
+        let y = -tickIncrement * i;
+        let value = Math.floor(i * valueIncrement).toFixed(0); // Round values
+
+        // Draw tick mark
+        line(0, y, -15, y);
+
+        // Draw numerical indicator
+        noStroke();
+        fill(axisTextColour);
+        textAlign(RIGHT, CENTER);
+        text(value, -20, y);
+    }
+
     pop();
 }
 
@@ -113,3 +141,5 @@ function cleanData() {
     cleanedData.sort((a, b) => (b.spotify + b.youtube) - (a.spotify + a.youtube));
     cleanedData = cleanedData.slice(0, 10); // Keep only the top 10
 }
+
+//rgb(116 179 206)rgb(80 137 145)rgb(23 42 58)rgb(0 67 70)rgb(9 188 138) make 
