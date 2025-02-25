@@ -6,11 +6,11 @@ class PieChart {
         this.chartRadius = options.chartRadius;
         this.chartPosX = options.chartPosX;
         this.chartPosY = options.chartPosY;
-        this.colors = this.generateColors(this.data.length);  // Store unique colors for tracks
+        this.colors = this.pieColor(this.data.length);  // Store unique colors for tracks
     }
 
     // Generate a list of unique colors for each track with gradient logic
-    generateColors(num) {
+    pieColor(num) {
         let colors = [];
         for (let i = 0; i < num; i++) {
             let colorValue;
