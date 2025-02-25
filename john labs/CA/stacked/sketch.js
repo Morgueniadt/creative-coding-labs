@@ -16,7 +16,7 @@ let yValues = ["spotify", "youtube"];
 let xValue = "track";
 let maxStreams;
 let maxViews;
-
+let barColours= [];
 let tickInterval;
 let numTicks = 10; // Define numTicks here
 let scaler;
@@ -31,8 +31,8 @@ function setup() {
     angleMode(DEGREES);
     noLoop();
     cleanData();
-    barColour = color(168, 230, 207); // Use a single color for all bars
-
+    barColours.push(color(23,32,54))
+    barColours.push(color(12,43,23))
     // Determine max values for both Spotify and YouTube streams
     maxStreams = max(cleanedData.map(row => row.spotify));
     maxViews = max(cleanedData.map(row => row.youtube)); 
@@ -43,7 +43,7 @@ function setup() {
     scaler = chartHeight / Total; // Adjust scaler based on the max combined value
 
     axisColour = color(169, 169, 169);
-    axisTextColour = color(225);
+    axisTextColour = color(0);
 }
 
 function draw() {
@@ -63,31 +63,28 @@ function draw() {
         let xPos = (barWidth + gap) * i;
 
         push();
-        translate(xPos, 0);
-        push();
-        // Draw bars for both Spotify and YouTube, stacked on top of each other
-        fill(barColour); // Use a single color for both bars
-        noStroke();
-        rect(0, 0, barWidth, -cleanedData[i].spotify * scaler); // Draw Spotify bar
-        translate(0, -cleanedData[i].spotify * scaler); // Move to the top of the Spotify bar
-        rect(0, 0, barWidth, -cleanedData[i].youtube * scaler); // Draw YouTube bar
+        translate(xPos, 0)
+        push()
+        for (let j = 0; j < yValues.length; j++) {
+            fill(barColours[j]);
+            noStroke();
+            rect(0,0, barWidth, -cleanedData[i][yValues[j]] * scaler);
+            translate(0, -cleanedData[i][yValues[j]]* scaler);
+        }
         pop();
         pop();
 
-        // Draw track name on X-axis (with check)
-        if (cleanedData[i].track) {
+        
             fill(axisTextColour);
             noStroke();
             textAlign(LEFT, CENTER);
-            textSize(8);
+            textSize(10);
             push();
             translate(xPos + (barWidth / 2), 10);
             rotate(60);
-            text(cleanedData[i].track, 0, 0); // Display track name
+            text(cleanedData[i][xValue], 0, 0); // Display track name
             pop();
-        } else {
-            console.warn(`Track name is missing for row ${i}`);
-        }
+        
     }
 
     pop();
