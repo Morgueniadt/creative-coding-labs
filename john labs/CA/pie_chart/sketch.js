@@ -36,6 +36,7 @@ function draw() {
         chart.renderPie();
         chart.renderLabels();
         chart.renderTitle();
+        chart.renderLegend();  // Render the legend
     });
 }
 
@@ -69,6 +70,16 @@ class PieChart {
         this.chartRadius = options.chartRadius;
         this.chartPosX = options.chartPosX;
         this.chartPosY = options.chartPosY;
+        this.colors = this.generateUniqueColors(this.data.length);  // Store unique colors for tracks
+    }
+
+    // Generate a list of unique colors for each track
+    generateUniqueColors(num) {
+        let colors = [];
+        for (let i = 0; i < num; i++) {
+            colors.push(color(random(255), random(255), random(255))); // Generate a random color
+        }
+        return colors;
     }
 
     // Render the pie chart with segments
@@ -82,7 +93,7 @@ class PieChart {
         // Draw each slice
         for (let i = 0; i < this.data.length; i++) {
             let sliceAngle = (this.data[i][this.yValue] / total) * 360;
-            fill(random(255), random(255), random(255)); // Random color for each slice
+            fill(this.colors[i]); // Use the unique color for each track
             noStroke();
             arc(0, 0, this.chartRadius * 2, this.chartRadius * 2, startAngle, startAngle + sliceAngle, PIE);
             startAngle += sliceAngle;
@@ -130,5 +141,22 @@ class PieChart {
         fill(0);
         text("Top 10 Most Streamed Spotify Tracks", 0, -this.chartRadius - 30);
         pop();
+    }
+
+    // Render the legend to the side
+    renderLegend() {
+        let xOffset = this.chartPosX + this.chartRadius + 50;  // Position the legend to the right of the chart
+        let yOffset = this.chartPosY - this.chartRadius;
+
+        for (let i = 0; i < this.data.length; i++) {
+            fill(this.colors[i]);
+            noStroke();
+            rect(xOffset, yOffset + i * 25, 20, 20);  // Draw the color box
+
+            fill(0);
+            textSize(12);
+            textAlign(LEFT, CENTER);
+            text(this.data[i].track, xOffset + 30, yOffset + i * 25 + 10);  // Display the track name next to the color box
+        }
     }
 }
