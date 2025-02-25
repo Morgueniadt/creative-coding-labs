@@ -1,6 +1,6 @@
 let data;
 let cleanedData = [];
-let charts = []; // Array to store chart instances
+let chart = [];
 
 function preload() {
     // Load the CSV data for the most streamed Spotify tracks
@@ -9,47 +9,47 @@ function preload() {
 
 function setup() {
     // Set up the canvas and other configurations
-    createCanvas(1000, 1000);
+    createCanvas(3000, 3000);
     angleMode(DEGREES);
     noLoop();
 
-    // Clean the data to process it for the bar chart
+    // Clean the data to process it for the charts
     cleanData();
 
-    // Create the bar chart instances for Spotify tracks' streams with smaller size
-    charts.push(new BarChart({
+    // Create instances of the chart types and push them into the chart array
+    chart.push(new BarChart({
         data: cleanedData,
         xValue: "track",  // Use track names for x-axis
         yValue: "streams",  // Use streams for y-axis
-        chartHeight: 400,  // Reduced height
-        chartWidth: 400,   // Reduced width
-        barWidth: 30,      // Smaller bars
-        margin: 10,        // Reduced margin
-        axisThickness: 2,  // Thinner axis
-        xPos: 100,         // Adjusted x position
-        yPos: 450          // Adjusted y position
+        chartHeight: 300, 
+        chartWidth: 600, 
+        barWidth: 20, 
+        margin: 10, 
+        axisThickness: 2, 
+        xPos: 350, 
+        yPos: 0
     }));
 
-    charts.push(new HorizontalBarChart({
+    chart.push(new HorizontalBarChart({
         data: cleanedData,
-        xValue: "track",  // Use track names for x-axis
-        yValue: "streams",  // Use streams for y-axis
-        chartHeight: 400,  // Reduced height
-        chartWidth: 400,   // Reduced width
-        barWidth: 30,      // Smaller bars
-        margin: 10,        // Reduced margin
-        axisThickness: 2,  // Thinner axis
-        xPos: 100,         // Adjusted x position
-        yPos: 450          // Adjusted y position
+        xValue: "track",  
+        yValue: "streams",  
+        chartHeight: 300, 
+        chartWidth: 600, 
+        barHeight: 20, 
+        margin: 10, 
+        axisThickness: 2, 
+        xPos: 350, 
+        yPos: 1000
     }));
 
-    charts.push(new PieChart({
+    chart.push(new PieChart({
         data: cleanedData,
-        xValue: "track",  // Use track names for segments
-        yValue: "streams",  // Use streams for segment size
-        chartRadius: 200,   // Smaller pie radius
-        chartPosX: width / 2,  // Center pie chart
-        chartPosY: height / 2  // Center pie chart
+        xValue: "track",  
+        yValue: "streams",  
+        chartRadius: 300, 
+        chartPosX: 650, 
+        chartPosY: height / 2,
     }));
 }
 
@@ -57,11 +57,31 @@ function draw() {
     // Draw the background
     background(220);
 
-    // Render each chart on the canvas
-    charts.forEach(chart => {
-        chart.render(); // Assuming each chart has a `render` method
+    // Loop through each chart in the chart array
+    chart.forEach(c => {
+        if (c instanceof BarChart) {
+            // Render specific methods for BarChart
+            c.renderBars();
+            c.renderAxis();
+            c.renderTicks();
+            c.renderLabels(); // Render labels for BarChart
+            c.renderTitle();
+        } else if (c instanceof HorizontalBarChart) {
+            // Render specific methods for HorizontalBarChart
+            c.renderBars();
+            c.renderAxis();
+            c.renderTicks();
+            c.renderLabels(); // Render labels for HorizontalBarChart
+            c.renderTitle();
+        } else if (c instanceof PieChart) {
+            // Render specific methods for PieChart
+            c.renderPie();
+            // No renderLabels() for PieChart, as it's not defined
+            c.renderTitle();
+        }
     });
 }
+
 
 function cleanData() {
     let trackSet = new Set(); // Use a Set to store unique track names
