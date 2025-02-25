@@ -56,11 +56,10 @@ class PieChart {
             fill(0);
             textSize(12);
             textAlign(CENTER, CENTER);
-            text(this.data[i].track, labelX, labelY); // Display track name
 
             // Calculate the percentage for each slice
             let percentage = ((this.data[i][this.yValue] / total) * 100).toFixed(1);
-            textSize(10);
+            textSize(20);
             text(percentage + "%", labelX, labelY + 20); // Display the percentage below the track name
 
             startAngle += sliceAngle;
