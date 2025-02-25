@@ -17,7 +17,7 @@ function setup() {
     cleanData();
 
     // Create the bar chart instances for Spotify tracks' streams
-    chart.push(new BarChart({
+    chart.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  // Use track names for x-axis
         yValue: "streams",  // Use streams for y-axis

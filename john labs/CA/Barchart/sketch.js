@@ -1,6 +1,6 @@
 let data;
 let cleanedData = [];
-let chart = [];
+let charts = []; // Array to store chart instances
 
 function preload() {
     // Load the CSV data for the most streamed Spotify tracks
@@ -13,11 +13,11 @@ function setup() {
     angleMode(DEGREES);
     noLoop();
 
-    // Clean the data to process it for the bar chart
+    // Clean the data to process it for the charts
     cleanData();
 
-    // Create the bar chart instances for Spotify tracks' streams
-    chart.push(new BarChart({
+    // Create the BarChart instance
+    charts.push(new BarChart({
         data: cleanedData,
         xValue: "track",  // Use track names for x-axis
         yValue: "streams",  // Use streams for y-axis
@@ -26,8 +26,32 @@ function setup() {
         barWidth: 40, 
         margin: 15, 
         axisThickness: 3, 
-        xPos: 200, 
+        xPos: 50, 
         yPos: 650
+    }));
+
+    // Create the HorizontalBarChart instance
+    charts.push(new HorizontalBarChart({
+        data: cleanedData,
+        xValue: "track",  // Use track names for x-axis
+        yValue: "streams",  // Use streams for y-axis
+        chartHeight: 600, 
+        chartWidth: 600, 
+        barWidth: 40, 
+        margin: 15, 
+        axisThickness: 3, 
+        xPos: 650, 
+        yPos: 650
+    }));
+
+    // Create the PieChart instance
+    charts.push(new PieChart({
+        data: cleanedData,
+        xValue: "track",  // Use track names for segments
+        yValue: "streams",  // Use streams for segment size
+        chartRadius: 300, 
+        chartPosX: width / 2, 
+        chartPosY: height / 3,
     }));
 }
 
@@ -36,12 +60,8 @@ function draw() {
     background(220);
 
     // Render each chart on the canvas
-    chart.forEach(chart => {
-        chart.renderBars();
-        chart.renderAxis();
-        chart.renderLabels();
-        chart.renderTicks();
-        chart.renderTitle();
+    charts.forEach(chart => {
+        chart.render(); // Assuming each chart has a `render` method
     });
 }
 

@@ -1,4 +1,4 @@
-class BarChart {
+class HorizontalBarChart {
     constructor(obj) {
         this.data = obj.data;
         this.xValue = obj.xValue;
