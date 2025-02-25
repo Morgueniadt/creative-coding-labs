@@ -49,7 +49,7 @@ function setup() {
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
-        yValue: "spotify",  
+        yValue: "youtube",  
         chartHeight: 300, 
         chartWidth: 600, 
         barHeight: 20, 
@@ -121,7 +121,7 @@ function cleanData() {
 
         // Check if track is already in the Set before adding
         if (!trackSet.has(track)) {
-            cleanedData.push({ track, spotify });
+            cleanedData.push({ track, spotify, youtube });
             trackSet.add(track); // Mark track as added
         }
     }
