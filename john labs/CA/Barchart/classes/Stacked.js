@@ -2,7 +2,7 @@ class StackedBarChart {
     constructor(obj) {
         this.data = obj.data;
         this.xValue = obj.xValue;
-        this.yValues = obj.yValues; // Array of keys for stacking
+        this.yValues = obj.yValues;
         this.chartHeight = obj.chartHeight || 300;
         this.chartWidth = obj.chartWidth || 300;
         this.barWidth = obj.barWidth || 10;
@@ -12,25 +12,15 @@ class StackedBarChart {
 
         this.chartPosX = obj.xPos || 50;
         this.chartPosY = obj.yPos || 350;
+        
+        this.title = obj.title || "";  // Dynamic title
 
         // Calculate gap between bars dynamically
         this.gap = (this.chartWidth - (this.data.length * this.barWidth) - (this.margin * 2)) / (this.data.length - 1);
 
-        // Calculate max stacked value per category
-        let maxValue = 0;
-        for (let i = 0; i < this.data.length; i++) {
-            let youtubeValue = parseFloat(this.data[i]["YouTube_Views"]) || 0;
-            let spotifyValue = parseFloat(this.data[i]["Spotify_Streams"]) || 0;
-            let totalValue = youtubeValue + spotifyValue;
-            
-            // Update maxValue if the current totalValue is greater
-            if (totalValue > maxValue) {
-                maxValue = totalValue;
-            }
-        }
-        this.maxValue = maxValue;
-        // ... (spread operator) spreads the list into individual numbers so Math.max() can compare them.
-        
+        // Calculate max value from CSV data dynamically
+        this.maxValue = Math.max(...this.data.map(row => Math.max(...this.yValues.map(key => parseFloat(row[key]) || 0))));
+
         // Calculate scaler
         this.scaler = this.chartHeight / this.maxValue;
 
@@ -38,14 +28,21 @@ class StackedBarChart {
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
         this.axisTickColour = color(0);  // Black (Ticks)
         this.axisTextColour = color(0, 0, 0);
-        this.numTicks = 10;
-        this.tickLength = 10;
 
-        // Ensure barColours is an array
-        this.barColours = obj.barColours || [
-            color(168, 230, 207), // Color 1
-            color(255, 204, 102), // Color 2
+        this.numTicks = 5;
+        this.tickLength = 5;
+
+        // Custom color palette for each platform (Spotify, YouTube, TikTok)
+        this.barColors = [
+            color("#74D3AE"), // Light Green for Spotify
+            color("#678D58"), // Olive Green for YouTube
+            color("#A6C48A")  // Muted Green for TikTok
         ];
+
+        // Define the position for the legend
+        this.legendPosX = this.chartPosX + this.chartWidth + 20;  // Just right of the chart
+        this.legendPosY = this.chartPosY;
+        this.legendSpacing = 20; // Space between each legend item
     }
 
     renderBars() {
@@ -60,18 +57,23 @@ class StackedBarChart {
             push();
             translate(xPos, 0);
     
-            // Cycle through a larger array of colors for each stacked section
-            for (let j = 0; j < this.yValues.length; j++) {
-                let value = parseFloat(this.data[i][this.yValues[j]]) || 0;
-                let barHeight = value * this.scaler;
+            // Check if yValues is an array before proceeding
+            if (Array.isArray(this.yValues)) {
+                // Cycle through a larger array of colors for each stacked section
+                for (let j = 0; j < this.yValues.length; j++) {
+                    let value = parseFloat(this.data[i][this.yValues[j]]) || 0;
+                    let barHeight = value * this.scaler;
     
-                // Use modulo operator to cycle through the colors dynamically
-                // Here we combine i and j to create a unique index for each stacked section
-                let colorIndex = (i * this.yValues.length + j) % this.barColours.length;
-                fill(this.barColours[colorIndex]);  // Cycle colors
-                noStroke();
-                rect(0, -stackedHeight, this.barWidth, -barHeight); // Stack bars
-                stackedHeight += barHeight; // Move up for next bar
+                    // Use modulo operator to cycle through the colors dynamically
+                    // Here we combine i and j to create a unique index for each stacked section
+                    let colorIndex = (i * this.yValues.length + j) % this.barColors.length;
+                    fill(this.barColors[colorIndex]);  // Cycle colors
+                    noStroke();
+                    rect(0, -stackedHeight, this.barWidth, -barHeight); // Stack bars
+                    stackedHeight += barHeight; // Move up for next bar
+                }
+            } else {
+                console.error("yValues is not an array!");
             }
     
             pop();
@@ -79,7 +81,6 @@ class StackedBarChart {
     
         pop();
     }
-    
 
     renderAxis() {
         push();
@@ -153,5 +154,4 @@ class StackedBarChart {
         text("Stacked Bar Chart", 0, 0);
         pop();
     }
-
 }
