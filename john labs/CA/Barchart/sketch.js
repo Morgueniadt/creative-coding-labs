@@ -80,6 +80,20 @@ function setup() {
         yPos: 0,
         title: "Stacked Spotify & YouTube Streams"
     }));
+    
+    chart.push(new ClusterBarChart({
+        data: cleanedData,
+        xValue: "track",
+        yValues: ["spotify", "youtube", "tiktok"],
+        chartHeight: 300, 
+        chartWidth: 300, 
+        barHeight: 20, 
+        margin: 15, 
+        axisThickness: 2, 
+        xPos: 1500, 
+        yPos: 0,
+        title: "Cluster Spotify & YouTube and Tiktok Streams"
+    }));
 }
 
 function draw() {
@@ -107,6 +121,12 @@ function draw() {
             c.renderAxis();
             c.renderTicks();
             c.renderLabels(); // Render labels for HorizontalBarChart
+            c.renderTitle();
+        } else if (c instanceof ClusterBarChart) {
+            // Render specific methods for HorizontalBarChart
+            c.renderBars();
+            c.renderAxis();
+            c.renderTicks();
             c.renderTitle();
         }
     });
