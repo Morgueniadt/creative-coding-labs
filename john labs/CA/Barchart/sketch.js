@@ -9,76 +9,76 @@ function preload() {
 }
 
 function setup() {
-    // Set up the canvas and other configurations
     createCanvas(3000, 10000);
     angleMode(DEGREES);
     noLoop();
 
-    // Clean the data to process it for the charts
     cleanData();
 
-    // Create instances of the chart types and push them into the chart array
     chart.push(new BarChart({
         data: cleanedData,
-        xValue: "track",  // Use track names for x-axis
-        yValue: "spotify",  // Use spotify for y-axis
+        xValue: "track",
+        yValue: "spotify",
         chartHeight: 150, 
         chartWidth: 300, 
         barWidth: 20, 
         margin: 10, 
         axisThickness: 2, 
         xPos: 350, 
-        yPos: 0
+        yPos: 0,
+        title: "Top Spotify Streams"
     }));
 
-    // Create the first horizontal bar chart and push it into the horizontalCharts array
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
-        xValue: "track",  
-        yValue: "tiktok",  
+        xValue: "track",
+        yValue: "tiktok",
         chartHeight: 300, 
         chartWidth: 300, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
         xPos: 750, 
-        yPos: 950
+        yPos: 950,
+        title: "Top TikTok Views"
     }));
 
-    // Create the second horizontal bar chart and push it into the horizontalCharts array
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
-        xValue: "track",  
-        yValue: "youtube",  
+        xValue: "track",
+        yValue: "youtube",
         chartHeight: 300, 
         chartWidth: 300, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
         xPos: 1500, 
-        yPos: 950  
+        yPos: 950,
+        title: "Top YouTube Views"
     }));
 
     chart.push(new PieChart({
         data: cleanedData,
-        xValue: "track",  
-        yValue: "spotify",  
-        chartRadius: 150, 
-        chartPosX: 750, 
-        chartPosY: 3500,
+        xValue: "track",
+        yValue: "spotify",
+        chartRadius: 150,
+        chartPosX: 750,
+        chartPosY: 1500,
+        title: "Spotify Streams Distribution"
     }));
 
     chart.push(new StackedBarChart({
         data: cleanedData,
-        xValue: "track",  
-        yValues:  ["spotify", "youtube"],
+        xValue: "track",
+        yValues: ["spotify", "youtube"],
         chartHeight: 300, 
         chartWidth: 300, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
         xPos: 750, 
-        yPos: 0  
+        yPos: 0,
+        title: "Stacked Spotify & YouTube Streams"
     }));
 }
 

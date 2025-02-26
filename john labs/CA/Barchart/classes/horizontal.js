@@ -24,12 +24,22 @@ class HorizontalBarChart {
 
         // Colors
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
-        this.axisTickColour = color(0);  // Light Blue (Ticks)
-        this.barColour = obj.barColour || color(168, 230, 207);  // Pastel Green (Bars)
+        this.axisTickColour = color(0);  // Black (Ticks)
         this.axisTextColour = color(0, 0, 0);
 
         this.numTicks = 10;
         this.tickLength = 10;
+
+        // Custom color palette
+        this.barColors = [
+            color("#74D3AE"), // Light Green
+            color("#678D58"), // Olive Green
+            color("#A6C48A"), // Muted Green
+            color("#F6E7CB"), // Cream
+            color("#DD9787")  // Soft Coral
+        ];
+
+        this.title = obj.title || "Horizontal Bar Chart"; // Ensure title is passed in constructor
     }
 
     renderBars() {
@@ -38,27 +48,26 @@ class HorizontalBarChart {
         rotate(-90);
         push();
         translate(this.margin, 0);
-    
-        // Loop through each data point and apply a dynamic color shade
+
+        // Loop through each data point and apply cycling colors
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
+            let barHeight = parseFloat(this.data[i][this.yValue]) || 0;
 
-    
-            fill(this.barColour);
+            // Cycle through custom colors
+            let barColor = this.barColors[i % this.barColors.length];
+            fill(barColor);
             noStroke();
-            rect(xPos, 0, this.barWidth, -this.data[i][this.yValue] * this.scaler);
-    
-        
+            rect(xPos, 0, this.barWidth, -barHeight * this.scaler);
         }
         pop();
         pop();
     }
-    
 
     renderAxis() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        rotate(-90)
+        rotate(-90);
         noFill();
         stroke(this.axisColour);
         strokeWeight(this.axisThickness);
@@ -70,7 +79,7 @@ class HorizontalBarChart {
     renderTicks() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        rotate(-90)
+        rotate(-90);
         noFill();
 
         // Set stroke for tick marks
@@ -79,7 +88,7 @@ class HorizontalBarChart {
 
         let tickIncrement = this.chartHeight / this.numTicks;
         let valueIncrement = this.maxValue / this.numTicks;
-        
+
         for (let i = 0; i <= this.numTicks; i++) {
             let y = -tickIncrement * i;
             let value = Math.floor(i * valueIncrement).toFixed(0); // Round values
@@ -90,15 +99,15 @@ class HorizontalBarChart {
             line(0, y, -this.tickLength, y);
 
             // Draw numerical indicator
-            push()
-            translate(-this.tickLength - 5, y)
-            rotate(45)
+            push();
+            translate(-this.tickLength - 5, y);
+            rotate(45);
             noStroke();
             fill(0);
-            textSize(16)
+            textSize(16);
             textAlign(RIGHT, CENTER);
-            text(value, 0,0);
-            pop()
+            text(value, 0, 0);
+            pop();
         }
 
         pop();
@@ -107,7 +116,7 @@ class HorizontalBarChart {
     renderLabels() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        rotate(-90)
+        rotate(-90);
         push();
         translate(this.margin, 0);
         for (let i = 0; i < this.data.length; i++) {
@@ -118,7 +127,7 @@ class HorizontalBarChart {
             textAlign(LEFT, CENTER);
             translate(xPos + (this.barWidth / 2), 15);
             textSize(15);
-            rotate(90)
+            rotate(90);
             text(this.data[i][this.xValue], 0, 0);
             pop();
         }
@@ -132,7 +141,7 @@ class HorizontalBarChart {
         fill(this.axisTextColour);
         textAlign(CENTER, CENTER);
         textSize(18);
-        text("Chart Title: Most Streamed Spotify Songs", 0, 0);
+        text(this.title, 0, 0); // Use dynamic title
         pop();
     }
-}    
+}

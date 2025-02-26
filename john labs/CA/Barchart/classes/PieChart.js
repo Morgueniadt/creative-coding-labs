@@ -6,34 +6,23 @@ class PieChart {
         this.chartRadius = options.chartRadius;
         this.chartPosX = options.chartPosX;
         this.chartPosY = options.chartPosY;
-        this.colors = this.pieColor(this.data.length);  // Store unique colors for tracks
+        this.title = options.title; // Ensure title is passed in constructor
+        this.colors = this.generateColors(this.data.length);  // Dynamically generate unique colors
     }
 
-    // Generate a list of unique colors for each track with gradient logic
-    pieColor(num) {
+    // Dynamically generate a color palette based on the number of slices
+    generateColors(num) {
         let colors = [];
         for (let i = 0; i < num; i++) {
-            let colorValue;
-
-            // Apply gradient logic based on yValue (either 'youtube' or 'spotify')
-            if (this.yValue === 'youtube') {
-                // Shades of red (from dark red to light red)
-                let redIntensity = map(i, 0, num - 1, 100, 255); // From dark to light red
-                colorValue = color(redIntensity, 0, 0);
-            } else if (this.yValue === 'spotify') {
-                // Shades of green (from dark green to light green)
-                let greenIntensity = map(i, 0, num - 1, 100, 255); // From dark to light green
-                colorValue = color(0, greenIntensity, 0);
-            } else {
-                // Default color if neither youtube nor spotify (light gray)
-                colorValue = color(169, 169, 169); // Light gray
-            }
-            colors.push(colorValue);
+            let hue = map(i, 0, num - 1, 0, 360); // Spread hues across the color wheel
+            let saturation = 80 + random(-10, 10); // Keep saturation high with slight variation
+            let brightness = 70 + random(-10, 10); // Keep brightness at a readable level
+            colors.push(color(hue, saturation, brightness)); // Generate HSB color
         }
         return colors;
     }
 
-    // Render the pie chart with segments
+    // Render the pie chart with dynamic slices
     renderPie() {
         push();
         translate(this.chartPosX, this.chartPosY);
@@ -41,10 +30,9 @@ class PieChart {
         let total = this.data.reduce((sum, row) => sum + row[this.yValue], 0);
         let startAngle = 0;
 
-        // Draw each slice
         for (let i = 0; i < this.data.length; i++) {
             let sliceAngle = (this.data[i][this.yValue] / total) * 360;
-            fill(this.colors[i]); // Use the unique color for each track
+            fill(this.colors[i]); // Use the unique color for each section
             noStroke();
             arc(0, 0, this.chartRadius * 2, this.chartRadius * 2, startAngle, startAngle + sliceAngle, PIE);
             startAngle += sliceAngle;
@@ -52,7 +40,7 @@ class PieChart {
         pop();
     }
 
-    // Render the labels and percentages for the pie chart
+    // Render labels and percentages for each pie section
     renderLabels() {
         push();
         translate(this.chartPosX, this.chartPosY);
@@ -60,24 +48,17 @@ class PieChart {
         let total = this.data.reduce((sum, row) => sum + row[this.yValue], 0);
         let startAngle = 0;
 
-        // Render labels and percentages on the pie chart slices
         for (let i = 0; i < this.data.length; i++) {
             let sliceAngle = (this.data[i][this.yValue] / total) * 360;
-            let labelAngle = startAngle + sliceAngle / 2; // Middle of the slice
+            let labelAngle = radians(startAngle + sliceAngle / 2); // Convert to radians for calculations
 
-            let labelX = cos(labelAngle) * (this.chartRadius / 1.5);
-            let labelY = sin(labelAngle) * (this.chartRadius / 1.5);
+            let labelX = cos(labelAngle) * (this.chartRadius * 0.6);
+            let labelY = sin(labelAngle) * (this.chartRadius * 0.6);
 
             fill(0);
-            textSize(12);
+            textSize(14);
             textAlign(CENTER, CENTER);
 
-            // Calculate the percentage for each slice
-            let percentage = ((this.data[i][this.yValue] / total) * 100).toFixed(1);
-            textSize(20);
-            text(percentage + "%", labelX, labelY + 20); // Display the percentage below the track name
-
-            startAngle += sliceAngle;
         }
         pop();
     }
@@ -85,28 +66,33 @@ class PieChart {
     // Render the chart title
     renderTitle() {
         push();
-        translate(this.chartPosX, this.chartPosY);
-        textSize(16);
-        textAlign(CENTER, CENTER);
+        translate(this.chartPosX, this.chartPosY - this.chartRadius - 20);
         fill(0);
-        text("Top 10 Most Streamed Tracks", 0, -this.chartRadius - 30);
+        textAlign(CENTER, CENTER);
+        textSize(18);
+        text(this.title, 0, 0); // Use dynamic title
         pop();
     }
 
-    // Render the legend to the side
+    // Render the legend for color reference
     renderLegend() {
-        let xOffset = this.chartPosX + this.chartRadius + 50;  // Position the legend to the right of the chart
+        let xOffset = this.chartPosX + this.chartRadius + 50;
         let yOffset = this.chartPosY - this.chartRadius;
-
+    
+        let total = this.data.reduce((sum, row) => sum + row[this.yValue], 0); // Calculate total value for percentage calculation
+    
         for (let i = 0; i < this.data.length; i++) {
+            let percentage = ((this.data[i][this.yValue] / total) * 100).toFixed(1); // Calculate the percentage
+    
             fill(this.colors[i]);
             noStroke();
-            rect(xOffset, yOffset + i * 25, 20, 20);  // Draw the color box
-
+            rect(xOffset, yOffset + i * 25, 20, 20); // Color box
+    
             fill(0);
             textSize(12);
             textAlign(LEFT, CENTER);
-            text(this.data[i].track, xOffset + 30, yOffset + i * 25 + 10);  // Display the track name next to the color box
+            text(this.data[i][this.xValue] + " (" + percentage + "%)", xOffset + 30, yOffset + i * 25 + 10); // Display name and percentage
         }
     }
+    
 }
