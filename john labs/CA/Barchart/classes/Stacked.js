@@ -17,9 +17,19 @@ class StackedBarChart {
         this.gap = (this.chartWidth - (this.data.length * this.barWidth) - (this.margin * 2)) / (this.data.length - 1);
 
         // Calculate max stacked value per category
-        this.maxValue = Math.max(...this.data.map(row => 
-            (parseFloat(row["YouTube Views"]) || 0) + (parseFloat(row["Spotify Streams"]) || 0)
-        ));// ... (spread operator) spreads the list into individual numbers so Math.max() can compare them.
+        let maxValue = 0;
+        for (let i = 0; i < this.data.length; i++) {
+            let youtubeValue = parseFloat(this.data[i]["YouTube_Views"]) || 0;
+            let spotifyValue = parseFloat(this.data[i]["Spotify_Streams"]) || 0;
+            let totalValue = youtubeValue + spotifyValue;
+            
+            // Update maxValue if the current totalValue is greater
+            if (totalValue > maxValue) {
+                maxValue = totalValue;
+            }
+        }
+        this.maxValue = maxValue;
+        // ... (spread operator) spreads the list into individual numbers so Math.max() can compare them.
         
         // Calculate scaler
         this.scaler = this.chartHeight / this.maxValue;
@@ -35,14 +45,13 @@ class StackedBarChart {
         this.barColours = obj.barColours || [
             color(168, 230, 207), // Color 1
             color(255, 204, 102), // Color 2
-            color(102, 153, 255)  // Color 3
         ];
     }
 
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
-
+console.log(this.maxValue)
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
             let stackedHeight = 0; // Tracks height for stacking

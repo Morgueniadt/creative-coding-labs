@@ -24,33 +24,40 @@ class BarChart {
 
         // Colors
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
-        this.axisTickColour = color(0);  // Light Blue (Ticks)
+        this.axisTickColour = color(0);  // Black (Ticks)
         this.axisTextColour = color(0, 0, 0);
 
         this.numTicks = 10;
         this.tickLength = 10;
+
+        // Custom color palette
+        this.barColors = [
+            color("#74D3AE"), // Light Green
+            color("#678D58"), // Olive Green
+            color("#A6C48A"), // Muted Green
+            color("#F6E7CB"), // Cream
+            color("#DD9787")  // Soft Coral
+        ];
     }
 
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
-        let barColor = color(168, 230, 207);  // Assign a color
         push();
         translate(this.margin, 0);
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
             let barHeight = parseFloat(this.data[i][this.yValue]) || 0;
-    
+
+            // Cycle through custom colors
+            let barColor = this.barColors[i % this.barColors.length];
             fill(barColor);
             noStroke();
             rect(xPos, 0, this.barWidth, -barHeight * this.scaler);
-    
-            
         }
         pop();
         pop();
     }
-    
 
     renderAxis() {
         push();

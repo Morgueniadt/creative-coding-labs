@@ -22,8 +22,8 @@ function setup() {
         data: cleanedData,
         xValue: "track",  // Use track names for x-axis
         yValue: "spotify",  // Use spotify for y-axis
-        chartHeight: 300, 
-        chartWidth: 600, 
+        chartHeight: 150, 
+        chartWidth: 300, 
         barWidth: 20, 
         margin: 10, 
         axisThickness: 2, 
@@ -35,14 +35,14 @@ function setup() {
     horizontalCharts.push(new HorizontalBarChart({
         data: cleanedData,
         xValue: "track",  
-        yValue: "spotify",  
-        chartHeight: 600, 
-        chartWidth: 600, 
+        yValue: "tiktok",  
+        chartHeight: 300, 
+        chartWidth: 300, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
-        xPos: 900, 
-        yPos: 1500
+        xPos: 750, 
+        yPos: 950
     }));
 
     // Create the second horizontal bar chart and push it into the horizontalCharts array
@@ -50,20 +50,20 @@ function setup() {
         data: cleanedData,
         xValue: "track",  
         yValue: "youtube",  
-        chartHeight: 600, 
-        chartWidth: 600, 
+        chartHeight: 300, 
+        chartWidth: 300, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
-        xPos: 900, 
-        yPos: 2500  
+        xPos: 1500, 
+        yPos: 950  
     }));
 
     chart.push(new PieChart({
         data: cleanedData,
         xValue: "track",  
         yValue: "spotify",  
-        chartRadius: 300, 
+        chartRadius: 150, 
         chartPosX: 750, 
         chartPosY: 3500,
     }));
@@ -72,13 +72,13 @@ function setup() {
         data: cleanedData,
         xValue: "track",  
         yValues:  ["spotify", "youtube"],
-        chartHeight: 600, 
-        chartWidth: 600, 
+        chartHeight: 300, 
+        chartWidth: 300, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
         xPos: 750, 
-        yPos: 5000  
+        yPos: 0  
     }));
 }
 
@@ -128,13 +128,15 @@ function cleanData() {
         let track = data.getString(i, "Track").trim(); // Ensure consistent formatting
         let spotify = data.getString(i, "Spotify_Streams").replace(/,/g, ""); // Remove commas
         let youtube = data.getString(i, "YouTube_Views").replace(/,/g, "");
+        let tiktok = data.getString(i, "TikTok_Views").replace(/,/g, "");
 
         spotify = int(spotify) || 0; // Convert to number
         youtube = int(youtube) || 0;
+        tiktok = int(tiktok)   || 0;
 
         // Check if track is already in the Set before adding
         if (!trackSet.has(track)) {
-            cleanedData.push({ track, spotify, youtube });
+            cleanedData.push({ track, spotify, youtube, tiktok });
             trackSet.add(track); // Mark track as added
         }
     }
