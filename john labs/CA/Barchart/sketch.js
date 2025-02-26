@@ -25,7 +25,7 @@ function setup() {
         margin: 10, 
         axisThickness: 2, 
         xPos: 100, 
-        yPos: 0,
+        yPos: 500,
         title: "Top Spotify Streams"
     }));
 
@@ -39,7 +39,7 @@ function setup() {
         margin: 15, 
         axisThickness: 2, 
         xPos: 750, 
-        yPos: 950,
+        yPos: 1200,
         title: "Top TikTok Views"
     }));
 
@@ -53,7 +53,7 @@ function setup() {
         margin: 15, 
         axisThickness: 2, 
         xPos: 1500, 
-        yPos: 950,
+        yPos: 1200,
         title: "Top YouTube Views"
     }));
 
@@ -61,9 +61,9 @@ function setup() {
         data: cleanedData,
         xValue: "track",
         yValue: "spotify",
-        chartRadius: 150,
-        chartPosX: 2000,
-        chartPosY: 950,
+        chartRadius: 200,
+        chartPosX: 2100,
+        chartPosY: 970,
         title: "Spotify Streams Distribution"
     }));
 
@@ -77,7 +77,7 @@ function setup() {
         margin: 15, 
         axisThickness: 2, 
         xPos: 800, 
-        yPos: 0,
+        yPos: 500,
         title: "Stacked Spotify & YouTube Streams"
     }));
     
@@ -91,7 +91,7 @@ function setup() {
         margin: 15, 
         axisThickness: 2, 
         xPos: 1500, 
-        yPos: 0,
+        yPos: 500,
         title: "Cluster Spotify & YouTube and Tiktok Streams"
     }));
 }
@@ -122,6 +122,8 @@ function draw() {
             c.renderTicks();
             c.renderLabels(); // Render labels for HorizontalBarChart
             c.renderTitle();
+            c.renderLegend();
+
         } else if (c instanceof ClusterBarChart) {
             // Render specific methods for HorizontalBarChart
             c.renderBars();

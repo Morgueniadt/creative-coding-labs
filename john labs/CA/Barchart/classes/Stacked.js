@@ -24,20 +24,19 @@ class StackedBarChart {
         // Calculate scaler
         this.scaler = this.chartHeight / this.maxValue;
 
-        // Colors
+        // Colors (removed TikTok color)
         this.axisColour = color(169, 169, 169);  // Light Gray (Axis)
         this.axisTickColour = color(0);  // Black (Ticks)
         this.axisTextColour = color(0, 0, 0);
 
-        this.numTicks = 5;
-        this.tickLength = 5;
-
-        // Custom color palette for each platform (Spotify, YouTube, TikTok)
+        // Custom color palette with only 2 colors now
         this.barColors = [
             color("#74D3AE"), // Light Green for Spotify
-            color("#678D58"), // Olive Green for YouTube
-            color("#A6C48A")  // Muted Green for TikTok
+            color("#678D58")  // Olive Green for YouTube
         ];
+
+        this.numTicks = 5;
+        this.tickLength = 5;
 
         // Define the position for the legend
         this.legendPosX = this.chartPosX + this.chartWidth + 20;  // Just right of the chart
@@ -59,14 +58,13 @@ class StackedBarChart {
     
             // Check if yValues is an array before proceeding
             if (Array.isArray(this.yValues)) {
-                // Cycle through a larger array of colors for each stacked section
+                // Cycle through the yValues for the two colors
                 for (let j = 0; j < this.yValues.length; j++) {
                     let value = parseFloat(this.data[i][this.yValues[j]]) || 0;
                     let barHeight = value * this.scaler;
     
-                    // Use modulo operator to cycle through the colors dynamically
-                    // Here we combine i and j to create a unique index for each stacked section
-                    let colorIndex = (i * this.yValues.length + j) % this.barColors.length;
+                    // Use modulo operator to cycle through the two colors
+                    let colorIndex = j % this.barColors.length;
                     fill(this.barColors[colorIndex]);  // Cycle colors
                     noStroke();
                     rect(0, -stackedHeight, this.barWidth, -barHeight); // Stack bars
@@ -151,7 +149,25 @@ class StackedBarChart {
         fill(this.axisTextColour);
         textAlign(CENTER, CENTER);
         textSize(18);
-        text("Stacked Bar Chart", 0, 0);
+        text(this.title || "Stacked Bar Chart", 0, 0);
+        pop();
+    }
+
+    // Render the legend
+    renderLegend() {
+        push();
+        fill(this.axisTextColour);
+        textAlign(LEFT, TOP);
+        textSize(14);
+        
+        // Render the legend items for each color
+        for (let i = 0; i < this.barColors.length; i++) {
+            fill(this.barColors[i]);
+            rect(this.legendPosX, this.legendPosY + i * this.legendSpacing, 15, 15); // Color box
+            fill(0);
+            text(this.yValues[i], this.legendPosX + 20, this.legendPosY + i * this.legendSpacing); // Label
+        }
+
         pop();
     }
 }
