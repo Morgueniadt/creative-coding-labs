@@ -19,12 +19,12 @@ function setup() {
         data: cleanedData,
         xValue: "track",
         yValue: "spotify",
-        chartHeight: 150, 
-        chartWidth: 300, 
+        chartHeight: 300, 
+        chartWidth: 600, 
         barWidth: 20, 
         margin: 10, 
         axisThickness: 2, 
-        xPos: 350, 
+        xPos: 100, 
         yPos: 0,
         title: "Top Spotify Streams"
     }));
@@ -72,11 +72,11 @@ function setup() {
         xValue: "track",
         yValues: ["spotify", "youtube"],
         chartHeight: 300, 
-        chartWidth: 300, 
+        chartWidth: 600, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
-        xPos: 750, 
+        xPos: 800, 
         yPos: 0,
         title: "Stacked Spotify & YouTube Streams"
     }));
