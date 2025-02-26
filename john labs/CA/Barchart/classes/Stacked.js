@@ -51,29 +51,35 @@ class StackedBarChart {
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
-console.log(this.maxValue)
+    
+        // We want to cycle through a different set of colors for each stacked bar
         for (let i = 0; i < this.data.length; i++) {
             let xPos = (this.barWidth + this.gap) * i;
             let stackedHeight = 0; // Tracks height for stacking
-
+    
             push();
             translate(xPos, 0);
-
+    
+            // Cycle through a larger array of colors for each stacked section
             for (let j = 0; j < this.yValues.length; j++) {
                 let value = parseFloat(this.data[i][this.yValues[j]]) || 0;
                 let barHeight = value * this.scaler;
-
-                fill(this.barColours[j % this.barColours.length]); // Cycle colors
+    
+                // Use modulo operator to cycle through the colors dynamically
+                // Here we combine i and j to create a unique index for each stacked section
+                let colorIndex = (i * this.yValues.length + j) % this.barColours.length;
+                fill(this.barColours[colorIndex]);  // Cycle colors
                 noStroke();
                 rect(0, -stackedHeight, this.barWidth, -barHeight); // Stack bars
                 stackedHeight += barHeight; // Move up for next bar
             }
-
+    
             pop();
         }
-
+    
         pop();
     }
+    
 
     renderAxis() {
         push();
