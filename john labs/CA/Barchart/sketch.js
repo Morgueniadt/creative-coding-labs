@@ -62,8 +62,8 @@ function setup() {
         xValue: "track",
         yValue: "spotify",
         chartRadius: 150,
-        chartPosX: 750,
-        chartPosY: 1500,
+        chartPosX: 2000,
+        chartPosY: 950,
         title: "Spotify Streams Distribution"
     }));
 
@@ -86,7 +86,7 @@ function setup() {
         xValue: "track",
         yValues: ["spotify", "youtube", "tiktok"],
         chartHeight: 300, 
-        chartWidth: 300, 
+        chartWidth: 600, 
         barHeight: 20, 
         margin: 15, 
         axisThickness: 2, 
@@ -128,6 +128,8 @@ function draw() {
             c.renderAxis();
             c.renderTicks();
             c.renderTitle();
+            c.renderLabels(); 
+
         }
     });
 

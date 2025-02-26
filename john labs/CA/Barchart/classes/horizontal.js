@@ -27,7 +27,7 @@ class HorizontalBarChart {
         this.axisTickColour = color(0);  // Black (Ticks)
         this.axisTextColour = color(0, 0, 0);
 
-        this.numTicks = 10;
+        this.numTicks = 5;
         this.tickLength = 10;
 
         // Custom color palette

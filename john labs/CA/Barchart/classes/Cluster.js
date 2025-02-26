@@ -29,8 +29,8 @@ class ClusterBarChart {
         this.axisTickColour = color(0);  // Black (Ticks)
         this.axisTextColour = color(0, 0, 0);
 
-        this.numTicks = 10;
-        this.tickLength = 10;
+        this.numTicks = 5;
+        this.tickLength = 5;
 
         // Custom color palette for each platform (Spotify, YouTube, TikTok)
         this.barColors = [
@@ -38,60 +38,30 @@ class ClusterBarChart {
             color("#678D58"), // Olive Green for YouTube
             color("#A6C48A")  // Muted Green for TikTok
         ];
+
+        // Define the position for the legend
+        this.legendPosX = this.chartPosX + this.chartWidth + 20;  // Just right of the chart
+        this.legendPosY = this.chartPosY;
+        this.legendSpacing = 20; // Space between each legend item
     }
 
     renderBars() {
         push();
         translate(this.chartPosX, this.chartPosY);
         noFill();
-
-        // Axis lines
-        stroke(this.axisColour);
-        strokeWeight(this.axisThickness);
-        line(0, 0, 0, -this.chartHeight); // Y-axis
-        line(0, 0, this.chartWidth, 0); // X-axis
-
-        // Draw tick increments and values
-        let tickCount = 5;
-        let tickGap = this.chartHeight / tickCount;
-        let tickValueGap = this.maxValue / tickCount;
-        textAlign(RIGHT, CENTER);
-        fill(0);
-        noStroke();
-        for (let i = 0; i <= tickCount; i++) {
-            let yPos = -i * tickGap;
-            let tickValue = Math.floor(i * tickValueGap);
-            text(tickValue, -10, yPos);
-            stroke(100);
-            line(0, yPos, this.chartWidth, yPos);
-        }
-
-        push();
-        translate(this.margin, 0);
-
         // Loop through data to create bars
         for (let i = 0; i < this.data.length; i++) {
-            push();
-            translate((this.gap + (this.barWidth * 3)) * i, 0);
-            
+            let xPos = (this.barWidth + this.gap) * i;
             for (let j = 0; j < this.yValues.length; j++) {
                 noStroke();
                 fill(this.barColors[j % this.barColors.length]); // Cycle through the color palette
-                let barHeight = this.data[i][this.yValues[j]] * this.scaler;
-                rect(this.barWidth * j, 0, this.barWidth, -barHeight);
+    
+                let barHeight = this.data[i][this.yValues[j]] * this.scaler; // Calculate the bar height
+    
+                // Bars grow downward from the X-axis (y=0)
+                rect(xPos + (this.barWidth * j), 0, this.barWidth, -barHeight); // Positive bar height
             }
-
-            // Draw track label
-            translate(this.barWidth, 20);
-            fill(0);
-            rotate(60);
-            textSize(10);
-            textAlign(LEFT, CENTER);
-            text(this.data[i][this.xValue], 0, 0); // Using the xValue for track name
-            pop();
         }
-
-        pop();
         pop();
     }
 
@@ -103,16 +73,6 @@ class ClusterBarChart {
         strokeWeight(this.axisThickness);
         line(0, 0, 0, -this.chartHeight); // Y-axis
         line(0, 0, this.chartWidth, 0);  // X-axis
-        pop();
-    }
-
-    renderTitle() {
-        push();
-        translate(this.chartPosX + this.chartWidth / 2, this.chartPosY - this.chartHeight - 20); // Title above chart
-        fill(this.axisTextColour);
-        textAlign(CENTER, CENTER);
-        textSize(18); // Adjust font size as needed
-        text(this.title, 0, 0); // Dynamic title
         pop();
     }
 
@@ -141,6 +101,54 @@ class ClusterBarChart {
             fill(0);
             textAlign(RIGHT, CENTER);
             text(value, -this.tickLength - 5, y);
+        }
+
+        pop();
+    }
+
+    renderLabels() {
+        push();
+        translate(this.chartPosX, this.chartPosY);
+
+        for (let i = 0; i < this.data.length; i++) {
+            let xPos = (this.barWidth + this.gap) * i;
+
+            push();
+            fill(this.axisTextColour);
+            textAlign(LEFT, CENTER);
+            translate(xPos + (this.barWidth / 2), 15);
+            textSize(15);
+            rotate(60);
+            text(this.data[i][this.xValue], 0, 0);
+            pop();
+        }
+        pop();
+    }
+
+    renderTitle() {
+        push();
+        translate(this.chartPosX + this.chartWidth / 2, this.chartPosY - this.chartHeight - 20); // Title above chart
+        fill(this.axisTextColour);
+        textAlign(CENTER, CENTER);
+        textSize(18); // Adjust font size as needed
+        text(this.title, 0, 0); // Dynamic title
+        pop();
+    }
+
+    renderLegend() {
+        push();
+        translate(this.legendPosX, this.legendPosY);
+
+        for (let i = 0; i < this.yValues.length; i++) {
+            // Draw color box for the legend
+            fill(this.barColors[i % this.barColors.length]);
+            rect(0, i * this.legendSpacing, 15, 15);  // 15x15 color box
+
+            // Draw label for the color
+            fill(this.axisTextColour);
+            textAlign(LEFT, CENTER);
+            textSize(12);
+            text(this.yValues[i], 20, i * this.legendSpacing + 7);  // Label to the right of the color box
         }
 
         pop();
