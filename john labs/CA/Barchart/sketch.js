@@ -129,6 +129,7 @@ function draw() {
             c.renderTicks();
             c.renderTitle();
             c.renderLabels(); 
+            c.renderLegend();
 
         }
     });
