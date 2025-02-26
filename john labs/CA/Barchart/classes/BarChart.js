@@ -12,6 +12,8 @@ class BarChart {
 
         this.chartPosX = obj.xPos || 50;
         this.chartPosY = obj.yPos || 350;
+        
+        this.title = obj.title || "";  // ✅ Dynamic title
 
         // Calculate gap between bars dynamically
         this.gap = (this.chartWidth - (this.data.length * this.barWidth) - (this.margin * 2)) / (this.data.length - 1);
@@ -128,7 +130,7 @@ class BarChart {
         fill(this.axisTextColour);
         textAlign(CENTER, CENTER);
         textSize(18);
-        text("Chart Title: Most Streamed Spotify Songs", 0, 0);
+        text(this.title, 0, 0); // ✅ Now using the dynamic title
         pop();
     }
 }
